@@ -1,22 +1,28 @@
 package org.example.fixerappbackend.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "valoraciones", schema = "fixer_app")
 public class Valoracion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_valoracion")
+    @Column(name = "id_valoracion", nullable = false)
     private Integer id;
 
-    @Column(name = "id_cliente")
-    private Integer idCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "id_usuario")
+    private Cliente cliente;
 
-    @Column(name = "id_profesional")
-    private Integer idProfesional;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "id_usuario_profesional")
+    private Profesional profesional;
 
     @Column(name = "puntuacion")
     private Integer puntuacion;
@@ -26,112 +32,31 @@ public class Valoracion {
     private String comentario;
 
     @Column(name = "fecha_timestamp")
-    private LocalDateTime fechaTimestamp;
+    private Instant fechaTimestamp;
 
-    @Column(name = "id_contratacion")
-    private Integer idContratacion;
-
-    @Column(name = "titulo")
-    private String titulo;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
-    private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_profesional", insertable = false, updatable = false)
-    private Profesional profesional;
-
-    @ManyToOne
-    @JoinColumn(name = "id_contratacion", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "id_contratacion")
     private Contratacion contratacion;
 
+    @Column(name = "titulo", length = 100)
+    private String titulo;
+
     // Getters y setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public Integer getIdProfesional() {
-        return idProfesional;
-    }
-
-    public void setIdProfesional(Integer idProfesional) {
-        this.idProfesional = idProfesional;
-    }
-
-    public Integer getPuntuacion() {
-        return puntuacion;
-    }
-
-    public void setPuntuacion(Integer puntuacion) {
-        this.puntuacion = puntuacion;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public LocalDateTime getFechaTimestamp() {
-        return fechaTimestamp;
-    }
-
-    public void setFechaTimestamp(LocalDateTime fechaTimestamp) {
-        this.fechaTimestamp = fechaTimestamp;
-    }
-
-    public Integer getIdContratacion() {
-        return idContratacion;
-    }
-
-    public void setIdContratacion(Integer idContratacion) {
-        this.idContratacion = idContratacion;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Profesional getProfesional() {
-        return profesional;
-    }
-
-    public void setProfesional(Profesional profesional) {
-        this.profesional = profesional;
-    }
-
-    public Contratacion getContratacion() {
-        return contratacion;
-    }
-
-    public void setContratacion(Contratacion contratacion) {
-        this.contratacion = contratacion;
-    }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public Profesional getProfesional() { return profesional; }
+    public void setProfesional(Profesional profesional) { this.profesional = profesional; }
+    public Integer getPuntuacion() { return puntuacion; }
+    public void setPuntuacion(Integer puntuacion) { this.puntuacion = puntuacion; }
+    public String getComentario() { return comentario; }
+    public void setComentario(String comentario) { this.comentario = comentario; }
+    public Instant getFechaTimestamp() { return fechaTimestamp; }
+    public void setFechaTimestamp(Instant fechaTimestamp) { this.fechaTimestamp = fechaTimestamp; }
+    public Contratacion getContratacion() { return contratacion; }
+    public void setContratacion(Contratacion contratacion) { this.contratacion = contratacion; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 }

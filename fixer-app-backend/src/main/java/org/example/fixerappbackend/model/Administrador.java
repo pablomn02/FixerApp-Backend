@@ -1,35 +1,22 @@
 package org.example.fixerappbackend.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "administradores", schema = "fixer_app")
-public class Administrador {
-    @Id
-    @Column(name = "id_admin", nullable = false)
-    private Integer id;
+@PrimaryKeyJoinColumn(name = "id_usuario")
+public class Administrador extends Usuario {
+    @Column(name = "nivel_acceso", length = 50)
+    private String nivelAcceso;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id_admin", nullable = false)
-    private Usuario usuario;
+    @Column(name = "ultimo_acceso")
+    private Instant ultimoAcceso;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    // Getters y setters
+    public String getNivelAcceso() { return nivelAcceso; }
+    public void setNivelAcceso(String nivelAcceso) { this.nivelAcceso = nivelAcceso; }
+    public Instant getUltimoAcceso() { return ultimoAcceso; }
+    public void setUltimoAcceso(Instant ultimoAcceso) { this.ultimoAcceso = ultimoAcceso; }
 }

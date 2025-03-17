@@ -19,13 +19,13 @@ public class Contratacion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "id_cliente")
-    private Cliente idCliente;
+    @JoinColumn(name = "id_usuario")
+    private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "id_profesional_servicio")
-    private ProfesionalServicio idProfesionalServicio;
+    private ProfesionalServicio profesionalServicio;
 
     @Column(name = "fecha_hora")
     private Instant fechaHora;
@@ -39,70 +39,24 @@ public class Contratacion {
     @Column(name = "costo_total", precision = 10, scale = 2)
     private BigDecimal costoTotal;
 
-    @OneToMany(mappedBy = "idContratacion")
+    @OneToMany(mappedBy = "contratacion")
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Cliente getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Cliente idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public ProfesionalServicio getIdProfesionalServicio() {
-        return idProfesionalServicio;
-    }
-
-    public void setIdProfesionalServicio(ProfesionalServicio idProfesionalServicio) {
-        this.idProfesionalServicio = idProfesionalServicio;
-    }
-
-    public Instant getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(Instant fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Integer getDuracionEstimada() {
-        return duracionEstimada;
-    }
-
-    public void setDuracionEstimada(Integer duracionEstimada) {
-        this.duracionEstimada = duracionEstimada;
-    }
-
-    public BigDecimal getCostoTotal() {
-        return costoTotal;
-    }
-
-    public void setCostoTotal(BigDecimal costoTotal) {
-        this.costoTotal = costoTotal;
-    }
-
-    public Set<Valoracion> getValoraciones() {
-        return valoraciones;
-    }
-
-    public void setValoraciones(Set<Valoracion> valoraciones) {
-        this.valoraciones = valoraciones;
-    }
+    // Getters y setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    public ProfesionalServicio getProfesionalServicio() { return profesionalServicio; }
+    public void setProfesionalServicio(ProfesionalServicio profesionalServicio) { this.profesionalServicio = profesionalServicio; }
+    public Instant getFechaHora() { return fechaHora; }
+    public void setFechaHora(Instant fechaHora) { this.fechaHora = fechaHora; }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+    public Integer getDuracionEstimada() { return duracionEstimada; }
+    public void setDuracionEstimada(Integer duracionEstimada) { this.duracionEstimada = duracionEstimada; }
+    public BigDecimal getCostoTotal() { return costoTotal; }
+    public void setCostoTotal(BigDecimal costoTotal) { this.costoTotal = costoTotal; }
+    public Set<Valoracion> getValoraciones() { return valoraciones; }
+    public void setValoraciones(Set<Valoracion> valoraciones) { this.valoraciones = valoraciones; }
 }

@@ -16,12 +16,14 @@ public class ProfesionalServicio {
     @Column(name = "id_profesional_servicio", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_profesional", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id_usuario")
     private Profesional profesional;
 
-    @ManyToOne
-    @JoinColumn(name = "id_servicio", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id_servicio")
     private Servicio servicio;
 
     @Column(name = "precio", precision = 10, scale = 2)
@@ -31,54 +33,20 @@ public class ProfesionalServicio {
     @Column(name = "descripcion_servicio", columnDefinition = "TEXT")
     private String descripcionServicio;
 
-    @OneToMany(mappedBy = "idProfesionalServicio")
+    @OneToMany(mappedBy = "profesionalServicio")
     private Set<Contratacion> contrataciones = new LinkedHashSet<>();
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Profesional getProfesional() {
-        return profesional;
-    }
-
-    public void setProfesional(Profesional profesional) {
-        this.profesional = profesional;
-    }
-
-    public Servicio getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
-
-    public BigDecimal getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
-    }
-
-    public String getDescripcionServicio() {
-        return descripcionServicio;
-    }
-
-    public void setDescripcionServicio(String descripcionServicio) {
-        this.descripcionServicio = descripcionServicio;
-    }
-
-    public Set<Contratacion> getContrataciones() {
-        return contrataciones;
-    }
-
-    public void setContrataciones(Set<Contratacion> contrataciones) {
-        this.contrataciones = contrataciones;
-    }
+    // Getters y setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public Profesional getProfesional() { return profesional; }
+    public void setProfesional(Profesional profesional) { this.profesional = profesional; }
+    public Servicio getServicio() { return servicio; }
+    public void setServicio(Servicio servicio) { this.servicio = servicio; }
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
+    public String getDescripcionServicio() { return descripcionServicio; }
+    public void setDescripcionServicio(String descripcionServicio) { this.descripcionServicio = descripcionServicio; }
+    public Set<Contratacion> getContrataciones() { return contrataciones; }
+    public void setContrataciones(Set<Contratacion> contrataciones) { this.contrataciones = contrataciones; }
 }
