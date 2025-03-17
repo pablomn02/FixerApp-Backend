@@ -1,5 +1,6 @@
 package org.example.fixerappbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -37,9 +38,11 @@ public class Profesional extends Usuario {
     private Integer totalContrataciones;
 
     @OneToMany(mappedBy = "profesional")
+    @JsonIgnore
     private Set<ProfesionalServicio> profesionalServicios = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "profesional")
+    @JsonIgnore
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
     // Getters y setters
