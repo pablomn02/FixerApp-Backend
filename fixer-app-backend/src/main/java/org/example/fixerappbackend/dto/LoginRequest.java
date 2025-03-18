@@ -2,7 +2,7 @@ package org.example.fixerappbackend.dto;
 
 public class LoginRequest {
     private String email;
-    private String contraseña;
+    private String contrasena;
 
     public String getEmail() {
         return email;
@@ -12,11 +12,11 @@ public class LoginRequest {
         this.email = email;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getcontrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setcontrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 }

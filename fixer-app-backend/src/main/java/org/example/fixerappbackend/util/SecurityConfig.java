@@ -22,9 +22,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Permite acceso libre a todas las rutas bajo /auth
-                        .anyRequest().authenticated()           // Requiere autenticación para todo lo demás
+                        .anyRequest().authenticated()
                 )
-                .csrf().disable(); // Desactiva CSRF para pruebas
+                .csrf().disable();
         return http.build();
     }
 }

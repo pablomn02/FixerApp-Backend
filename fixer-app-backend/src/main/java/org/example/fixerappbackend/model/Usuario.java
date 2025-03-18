@@ -18,7 +18,7 @@ public abstract class Usuario {
     private String nombreUsuario;
 
     @Column(name = "contraseña")
-    private String contraseña;
+    private String contrasena;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -33,8 +33,8 @@ public abstract class Usuario {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public String getNombreUsuario() { return nombreUsuario; }
     public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
-    public String getContraseña() { return contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getcontrasena() { return contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public Float getValoracion() { return valoracion; }
