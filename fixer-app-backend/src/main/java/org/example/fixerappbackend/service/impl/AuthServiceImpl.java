@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Verificar contraseña
         LOGGER.info("Verificando contraseña para " + loginRequest.getEmail());
-        if (!passwordEncoder.matches(loginRequest.getcontrasena(), usuario.getcontrasena())) {
+        if (!passwordEncoder.matches(loginRequest.getContrasena(), usuario.getcontrasena())) {
             LOGGER.warning("Contraseña incorrecta para " + loginRequest.getEmail());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Contraseña incorrecta"));
@@ -101,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
 
         // Configurar los campos comunes
         usuario.setNombre(registerRequest.getNombre());
-        usuario.setNombreUsuario(registerRequest.getUsername());
+        usuario.setNombreUsuario(registerRequest.getusuario());
         usuario.setEmail(registerRequest.getEmail());
         usuario.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
         usuario.setValoracion(0.0f);

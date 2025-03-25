@@ -3,7 +3,7 @@ package org.example.fixerappbackend.dto;
 
 public class RegisterRequest {
     private String nombre;
-    private String username;
+    private String usuario;
     private String contrasena;
     private String email;
     private Float valoracion;
@@ -13,9 +13,9 @@ public class RegisterRequest {
     public RegisterRequest() {
     }
 
-    public RegisterRequest(String nombre, String username, String contrasena, String email, Float valoracion, String rol) {
+    public RegisterRequest(String nombre, String usuario, String contrasena, String email, Float valoracion, String rol) {
         this.nombre = nombre;
-        this.username = username;
+        this.usuario = usuario;
         this.contrasena = contrasena;
         this.email = email;
         this.valoracion = valoracion;
@@ -30,12 +30,12 @@ public class RegisterRequest {
         this.nombre = nombre;
     }
 
-    public String getUsername() {
-        return username;
+    public String getusuario() {
+        return usuario;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setusuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getEmail() {
