@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> resgister(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         return authService.register(registerRequest);
     }
 }
