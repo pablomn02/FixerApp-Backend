@@ -1,5 +1,6 @@
 package org.example.fixerappbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -22,21 +23,21 @@ public class Servicio {
     @Column(name = "descripcion", columnDefinition = "TEXT")
     private String descripcion;
 
-
     @OneToMany(mappedBy = "servicio")
+    @JsonIgnore
     private Set<ProfesionalServicio> profesionalServicios = new LinkedHashSet<>();
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_categoria", nullable = false)
-    private org.example.fixerappbackend.model.Categoria idCategoria;
+    @JsonIgnore
+    private Categoria idCategoria;
 
-    public org.example.fixerappbackend.model.Categoria getIdCategoria() {
+    public Categoria getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(org.example.fixerappbackend.model.Categoria idCategoria) {
+    public void setIdCategoria(Categoria idCategoria) {
         this.idCategoria = idCategoria;
     }
 

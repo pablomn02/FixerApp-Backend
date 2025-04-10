@@ -22,7 +22,9 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @CrossOrigin("*")
-    public Optional<Usuario> getUsuarioById(@PathVariable Long id) {
+    public Optional<Usuario> getUsuarioById(@PathVariable Integer id) {
         return usuarioService.findById(id);
     }
+
+
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
@@ -16,5 +17,10 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public List<Categoria> findAll() {
         return categoriaRepo.findAll();
+    }
+
+    @Override
+    public Optional<Categoria> findById(Integer id) {
+        return categoriaRepo.findById(id);
     }
 }
