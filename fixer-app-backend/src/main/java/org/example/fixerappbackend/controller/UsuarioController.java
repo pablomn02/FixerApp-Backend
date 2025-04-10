@@ -3,11 +3,10 @@ package org.example.fixerappbackend.controller;
 import org.example.fixerappbackend.model.Usuario;
 import org.example.fixerappbackend.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -16,7 +15,14 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
+    @CrossOrigin("*")
     public List<Usuario> getAllUsuarios() {
         return usuarioService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    @CrossOrigin("*")
+    public Optional<Usuario> getUsuarioById(@PathVariable Long id) {
+        return usuarioService.findById(id);
     }
 }

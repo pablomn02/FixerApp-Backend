@@ -21,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Permite acceso libre a todas las rutas bajo /auth
+                        .requestMatchers("/**").permitAll() // Permite acceso libre a todas las rutas bajo /auth
                         .anyRequest().authenticated()
                 )
                 .csrf().disable();

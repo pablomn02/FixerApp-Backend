@@ -27,8 +27,7 @@ public class Profesional extends Usuario {
     @Column(name = "experiencia")
     private Integer experiencia;
 
-    @Lob
-    @Column(name = "certificaciones")
+    @Column(name = "certificaciones", columnDefinition = "TEXT")
     private String certificaciones;
 
     @Column(name = "calificacion_promedio")

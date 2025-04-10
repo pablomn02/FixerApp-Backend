@@ -27,7 +27,6 @@ public class Valoracion {
     @Column(name = "puntuacion")
     private Integer puntuacion;
 
-    @Lob
     @Column(name = "comentario", columnDefinition = "TEXT")
     private String comentario;
 
@@ -38,9 +37,6 @@ public class Valoracion {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "id_contratacion")
     private Contratacion contratacion;
-
-    @Column(name = "titulo", length = 100)
-    private String titulo;
 
     // Getters y setters
     public Integer getId() { return id; }
@@ -57,6 +53,4 @@ public class Valoracion {
     public void setFechaTimestamp(Instant fechaTimestamp) { this.fechaTimestamp = fechaTimestamp; }
     public Contratacion getContratacion() { return contratacion; }
     public void setContratacion(Contratacion contratacion) { this.contratacion = contratacion; }
-    public String getTitulo() { return titulo; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
 }

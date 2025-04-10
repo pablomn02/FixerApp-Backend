@@ -29,7 +29,6 @@ public class ProfesionalServicio {
     @Column(name = "precio", precision = 10, scale = 2)
     private BigDecimal precio;
 
-    @Lob
     @Column(name = "descripcion_servicio", columnDefinition = "TEXT")
     private String descripcionServicio;
 
