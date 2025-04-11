@@ -2,6 +2,14 @@ DROP DATABASE IF EXISTS fixer_app;
 CREATE DATABASE IF NOT EXISTS fixer_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE fixer_app;
 
+CREATE TABLE fixer_app.password_reset_tokens (
+                                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                                 token VARCHAR(255) NOT NULL UNIQUE,
+                                                 id_usuario INT NOT NULL,
+                                                 expiry_date DATETIME NOT NULL,
+                                                 FOREIGN KEY (id_usuario) REFERENCES fixer_app.usuarios(id_usuario)
+);
+
 CREATE TABLE categorias (
                             id_categoria INT PRIMARY KEY AUTO_INCREMENT,
                             nombre VARCHAR(50) NOT NULL,

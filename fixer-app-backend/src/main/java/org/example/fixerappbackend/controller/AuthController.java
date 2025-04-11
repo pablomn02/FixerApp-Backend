@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -24,5 +27,36 @@ public class AuthController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         return authService.register(registerRequest);
+    }
+
+    @PostMapping("/request-password-reset")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Map<String, String>> requestPasswordReset(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            String email = request.get("email");
+            authService.requestPasswordReset(email);
+            response.put("message", "Se ha enviado un enlace de recuperación a tu correo electrónico.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    @PostMapping("/reset-password")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            String token = request.get("token");
+            String newPassword = request.get("newPassword");
+            authService.resetPassword(token, newPassword);
+            response.put("message", "Contraseña restablecida exitosamente.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(400).body(response);
+        }
     }
 }
