@@ -27,6 +27,7 @@ public abstract class Usuario {
     private Float valoracion;
 
     // Getters y setters
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getNombre() { return nombre; }

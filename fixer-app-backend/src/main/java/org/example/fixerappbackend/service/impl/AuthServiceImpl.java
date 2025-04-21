@@ -84,25 +84,71 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<?> register(RegisterRequest registerRequest) {
         LOGGER.info("Intentando registrar usuario con email: " + registerRequest.getEmail());
 
+        // Validar si el email ya está registrado
         if (usuarioRepository.findByEmail(registerRequest.getEmail()) != null) {
             LOGGER.warning("El email ya está registrado: " + registerRequest.getEmail());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "El email ya está registrado"));
         }
 
+        // Validar si el nombre de usuario ya está registrado
+        if (usuarioRepository.findByNombreUsuario(registerRequest.getusuario()) != null) {
+            LOGGER.warning("El nombre de usuario ya está registrado: " + registerRequest.getusuario());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "El nombre de usuario ya está registrado"));
+        }
+
+        // Validar la contraseña
         if (registerRequest.getContrasena() == null || registerRequest.getContrasena().isEmpty()) {
             LOGGER.warning("La contraseña no puede ser nula o vacía");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "La contraseña es requerida"));
         }
 
+        // Determinar el tipo de usuario según el rol
         Usuario usuario;
         switch (registerRequest.getRol().toLowerCase()) {
             case "cliente":
                 usuario = new Cliente();
+                usuario.setNombre(registerRequest.getNombre());
+                usuario.setNombreUsuario(registerRequest.getusuario());
+                usuario.setEmail(registerRequest.getEmail());
+                usuario.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
+                usuario.setValoracion(0.0f);
                 break;
             case "profesional":
                 usuario = new Profesional();
+                // Configurar los campos comunes de Usuario
+                usuario.setNombre(registerRequest.getNombre());
+                usuario.setNombreUsuario(registerRequest.getusuario());
+                usuario.setEmail(registerRequest.getEmail());
+                usuario.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
+                usuario.setValoracion(0.0f);
+
+                // Castear a Profesional para configurar los campos específicos
+                Profesional profesional = (Profesional) usuario;
+                profesional.setEspecialidad(registerRequest.getEspecialidad());
+                profesional.setPrecioHora(registerRequest.getPrecioHora());
+                profesional.setHorarioDisponible(registerRequest.getHorarioDisponible());
+                profesional.setExperiencia(registerRequest.getExperiencia());
+                profesional.setCertificaciones(registerRequest.getCertificaciones());
+                profesional.setCalificacionPromedio(registerRequest.getCalificacionPromedio() != null ? registerRequest.getCalificacionPromedio() : 0.0f);
+                profesional.setTotalContrataciones(registerRequest.getTotalContrataciones() != null ? registerRequest.getTotalContrataciones() : 0);
+
+                // Configurar la ubicación
+                Map<String, Double> ubicacionMap = registerRequest.getUbicacion();
+                if (ubicacionMap == null || !ubicacionMap.containsKey("latitud") || !ubicacionMap.containsKey("longitud")) {
+                    LOGGER.warning("El campo 'ubicacion' es obligatorio para profesionales y debe contener 'latitud' y 'longitud'");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(Map.of("error", "El campo 'ubicacion' es obligatorio para profesionales y debe contener 'latitud' y 'longitud'"));
+                }
+                double latitud = ubicacionMap.get("latitud");
+                double longitud = ubicacionMap.get("longitud");
+                profesional.setUbicacion(latitud, longitud);
+
+                // Log para depurar el objeto Profesional antes de guardar
+                LOGGER.info("Objeto Profesional antes de guardar: " + profesional);
+                LOGGER.info("Ubicacion del profesional: " + profesional.getUbicacion());
                 break;
             default:
                 LOGGER.warning("Rol no válido: " + registerRequest.getRol());
@@ -110,15 +156,11 @@ public class AuthServiceImpl implements AuthService {
                         .body(Map.of("error", "Rol no válido. Use 'cliente' o 'profesional'"));
         }
 
-        usuario.setNombre(registerRequest.getNombre());
-        usuario.setNombreUsuario(registerRequest.getusuario());
-        usuario.setEmail(registerRequest.getEmail());
-        usuario.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
-        usuario.setValoracion(0.0f);
-
+        // Guardar el usuario en la base de datos
         usuarioRepository.save(usuario);
         LOGGER.info("Usuario registrado exitosamente: " + usuario.getEmail());
 
+        // Generar token JWT
         String token = jwtUtil.create(String.valueOf(usuario.getId()), usuario.getEmail());
         String rol = determinarRol(usuario);
 
@@ -180,19 +222,19 @@ public class AuthServiceImpl implements AuthService {
         String resetUrl = frontendUrl + "/reset-password?token=" + token;
 
         helper.setTo(email);
-        helper.setSubject("Recuperación de Contraseña - FixerApp");
+        helper.setSubject("Recuperación de Contraseña - Fixer");
         helper.setText(
                 "<div style=\"font-family: 'Roboto', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f5f8; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\">" +
                         "<h1 style=\"color: #3880ff; text-align: center; font-size: 24px; margin-bottom: 20px;\">Recuperación de Contraseña</h1>" +
                         "<p style=\"color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;\">Hola,</p>" +
-                        "<p style=\"color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;\">Hemos recibido una solicitud para restablecer tu contraseña en <strong>FixerApp</strong>.</p>" +
+                        "<p style=\"color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;\">Hemos recibido una solicitud para restablecer tu contraseña en <strong>Fixer</strong>.</p>" +
                         "<p style=\"color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;\">Haz clic en el siguiente botón para restablecer tu contraseña:</p>" +
                         "<div style=\"text-align: center; margin-bottom: 20px;\">" +
                         "<a href=\"" + resetUrl + "\" style=\"display: inline-block; padding: 12px 24px; background-color: #3880ff; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;\">Restablecer Contraseña</a>" +
                         "</div>" +
                         "<p style=\"color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;\">Este enlace es válido por 24 horas.</p>" +
                         "<p style=\"color: #333333; font-size: 16px; line-height: 1.5; margin-bottom: 20px;\">Si no solicitaste este cambio, ignora este correo.</p>" +
-                        "<p style=\"color: #666666; font-size: 14px; text-align: center; margin-top: 30px;\">© 2025 FixerApp. Todos los derechos reservados.</p>" +
+                        "<p style=\"color: #666666; font-size: 14px; text-align: center; margin-top: 30px;\">© 2025 Fixer. Todos los derechos reservados.</p>" +
                         "</div>",
                 true
         );

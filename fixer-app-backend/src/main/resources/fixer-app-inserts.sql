@@ -2,14 +2,6 @@ DROP DATABASE IF EXISTS fixer_app;
 CREATE DATABASE IF NOT EXISTS fixer_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE fixer_app;
 
-CREATE TABLE fixer_app.password_reset_tokens (
-                                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                                 token VARCHAR(255) NOT NULL UNIQUE,
-                                                 id_usuario INT NOT NULL,
-                                                 expiry_date DATETIME NOT NULL,
-                                                 FOREIGN KEY (id_usuario) REFERENCES fixer_app.usuarios(id_usuario)
-);
-
 CREATE TABLE categorias (
                             id_categoria INT PRIMARY KEY AUTO_INCREMENT,
                             nombre VARCHAR(50) NOT NULL,
@@ -36,11 +28,22 @@ CREATE TABLE usuarios (
                           valoracion FLOAT
 ) ENGINE=InnoDB;
 
+CREATE TABLE fixer_app.password_reset_tokens (
+                                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                                 token VARCHAR(255) NOT NULL UNIQUE,
+                                                 id_usuario INT NOT NULL,
+                                                 expiry_date DATETIME NOT NULL,
+                                                 FOREIGN KEY (id_usuario) REFERENCES fixer_app.usuarios(id_usuario)
+);
+
 CREATE TABLE clientes (
                           id_usuario INT PRIMARY KEY,
                           preferencias JSON,
+                          ubicacion GEOMETRY NOT NULL,
                           FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE SPATIAL INDEX idx_clientes_ubicacion ON clientes(ubicacion);
 
 CREATE TABLE profesionales (
                                id_usuario INT PRIMARY KEY,
@@ -51,8 +54,11 @@ CREATE TABLE profesionales (
                                certificaciones TEXT,
                                calificacion_promedio FLOAT,
                                total_contrataciones INT,
+                               ubicacion GEOMETRY NOT NULL,
                                FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE SPATIAL INDEX idx_profesionales_ubicacion ON profesionales(ubicacion);
 
 CREATE TABLE administradores (
                                  id_usuario INT PRIMARY KEY,
@@ -106,6 +112,7 @@ CREATE INDEX idx_valoraciones_id_usuario ON valoraciones (id_usuario);
 CREATE INDEX idx_valoraciones_id_usuario_profesional ON valoraciones (id_usuario_profesional);
 CREATE INDEX idx_valoraciones_id_contratacion ON valoraciones (id_contratacion);
 
+-- Inserciones de datos
 INSERT INTO usuarios (nombre, nombre_usuario, contraseña, email, valoracion) VALUES
                                                                                  ('Juan Pérez', 'juanperez', 'hashedpass1', 'juan@example.com', 4.5),
                                                                                  ('María Gómez', 'mariagomez', 'hashedpass2', 'maria@example.com', 4.8),
@@ -115,11 +122,20 @@ INSERT INTO usuarios (nombre, nombre_usuario, contraseña, email, valoracion) VA
                                                                                  ('Admin Cuatro', 'admin4', 'hashedpass6', 'admin4@example.com', NULL),
                                                                                  ('Admin Cinco', 'admin5', 'hashedpass7', 'admin5@example.com', NULL);
 
-INSERT INTO clientes (id_usuario, preferencias) VALUES
-    (1, '{"preferencia1": "servicio rápido", "preferencia2": "horario matutino"}');
+INSERT INTO clientes (id_usuario, preferencias, ubicacion) VALUES
+    (1, '{"preferencia1": "servicio rápido", "preferencia2": "horario matutino"}', ST_GeomFromText('POINT(-3.703790 40.416775)', 4326));
 
-INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones) VALUES
-    (2, 'Hogar', 15.50, '{"lunes": "09:00-17:00", "martes": "09:00-17:00"}', 5, 'Certificado profesional', 4.7, 10);
+-- Actualizamos el formato de horario_disponible
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, ubicacion) VALUES
+    (2, 'Hogar', 15.50, '{
+      "lunes": [{"inicio": "09:00", "fin": "17:00"}],
+      "martes": [{"inicio": "09:00", "fin": "17:00"}],
+      "miercoles": [],
+      "jueves": [],
+      "viernes": [],
+      "sabado": [],
+      "domingo": []
+    }', 5, 'Certificado profesional', 4.7, 10, ST_GeomFromText('POINT(2.173404 41.385064)', 4326));
 
 INSERT INTO categorias (nombre, descripcion) VALUES
                                                  ('Hogar', 'Reparaciones y mantenimiento doméstico'),
