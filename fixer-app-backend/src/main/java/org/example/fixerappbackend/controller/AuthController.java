@@ -1,7 +1,8 @@
 package org.example.fixerappbackend.controller;
 
+import org.example.fixerappbackend.dto.ClienteRegisterRequest;
+import org.example.fixerappbackend.dto.ProfesionalRegisterRequest;
 import org.example.fixerappbackend.dto.LoginRequest;
-import org.example.fixerappbackend.dto.RegisterRequest;
 import org.example.fixerappbackend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,16 @@ public class AuthController {
         return authService.login(loginRequest);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register/cliente")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
-        return authService.register(registerRequest);
+    public ResponseEntity<?> registerCliente(@RequestBody ClienteRegisterRequest registerRequest) {
+        return authService.registerCliente(registerRequest);
+    }
+
+    @PostMapping("/register/profesional")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> registerProfesional(@RequestBody ProfesionalRegisterRequest registerRequest) {
+        return authService.registerProfesional(registerRequest);
     }
 
     @PostMapping("/request-password-reset")

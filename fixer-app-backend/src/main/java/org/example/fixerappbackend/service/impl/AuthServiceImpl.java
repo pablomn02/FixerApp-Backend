@@ -1,7 +1,8 @@
 package org.example.fixerappbackend.service.impl;
 
+import org.example.fixerappbackend.dto.ClienteRegisterRequest;
+import org.example.fixerappbackend.dto.ProfesionalRegisterRequest;
 import org.example.fixerappbackend.dto.LoginRequest;
-import org.example.fixerappbackend.dto.RegisterRequest;
 import org.example.fixerappbackend.model.Cliente;
 import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.Usuario;
@@ -80,96 +81,110 @@ public class AuthServiceImpl implements AuthService {
         ));
     }
 
-    @Override
-    public ResponseEntity<?> register(RegisterRequest registerRequest) {
-        LOGGER.info("Intentando registrar usuario con email: " + registerRequest.getEmail());
+    public ResponseEntity<?> registerCliente(ClienteRegisterRequest registerRequest) {
+        LOGGER.info("Intentando registrar cliente con email: " + registerRequest.getEmail());
 
-        // Validar si el email ya está registrado
-        if (usuarioRepository.findByEmail(registerRequest.getEmail()) != null) {
-            LOGGER.warning("El email ya está registrado: " + registerRequest.getEmail());
+        // Validaciones comunes
+        if (isEmailOrUsernameTaken(registerRequest.getEmail(), registerRequest.getUsuario())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "El email ya está registrado"));
+                    .body(Map.of("error", "El email o nombre de usuario ya está registrado"));
         }
 
-        // Validar si el nombre de usuario ya está registrado
-        if (usuarioRepository.findByNombreUsuario(registerRequest.getusuario()) != null) {
-            LOGGER.warning("El nombre de usuario ya está registrado: " + registerRequest.getusuario());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "El nombre de usuario ya está registrado"));
-        }
-
-        // Validar la contraseña
-        if (registerRequest.getContrasena() == null || registerRequest.getContrasena().isEmpty()) {
-            LOGGER.warning("La contraseña no puede ser nula o vacía");
+        if (isInvalidPassword(registerRequest.getContrasena())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "La contraseña es requerida"));
         }
 
-        // Determinar el tipo de usuario según el rol
-        Usuario usuario;
-        switch (registerRequest.getRol().toLowerCase()) {
-            case "cliente":
-                usuario = new Cliente();
-                usuario.setNombre(registerRequest.getNombre());
-                usuario.setNombreUsuario(registerRequest.getusuario());
-                usuario.setEmail(registerRequest.getEmail());
-                usuario.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
-                usuario.setValoracion(0.0f);
-                break;
-            case "profesional":
-                usuario = new Profesional();
-                // Configurar los campos comunes de Usuario
-                usuario.setNombre(registerRequest.getNombre());
-                usuario.setNombreUsuario(registerRequest.getusuario());
-                usuario.setEmail(registerRequest.getEmail());
-                usuario.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
-                usuario.setValoracion(0.0f);
+        // Crear cliente
+        Cliente cliente = new Cliente();
+        cliente.setNombre(registerRequest.getNombre());
+        cliente.setNombreUsuario(registerRequest.getUsuario());
+        cliente.setEmail(registerRequest.getEmail());
+        cliente.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
+        cliente.setValoracion(0.0f);
+        cliente.setPreferencias(registerRequest.getPreferencias());
 
-                // Castear a Profesional para configurar los campos específicos
-                Profesional profesional = (Profesional) usuario;
-                profesional.setEspecialidad(registerRequest.getEspecialidad());
-                profesional.setPrecioHora(registerRequest.getPrecioHora());
-                profesional.setHorarioDisponible(registerRequest.getHorarioDisponible());
-                profesional.setExperiencia(registerRequest.getExperiencia());
-                profesional.setCertificaciones(registerRequest.getCertificaciones());
-                profesional.setCalificacionPromedio(registerRequest.getCalificacionPromedio() != null ? registerRequest.getCalificacionPromedio() : 0.0f);
-                profesional.setTotalContrataciones(registerRequest.getTotalContrataciones() != null ? registerRequest.getTotalContrataciones() : 0);
-
-                // Configurar la ubicación
-                Map<String, Double> ubicacionMap = registerRequest.getUbicacion();
-                if (ubicacionMap == null || !ubicacionMap.containsKey("latitud") || !ubicacionMap.containsKey("longitud")) {
-                    LOGGER.warning("El campo 'ubicacion' es obligatorio para profesionales y debe contener 'latitud' y 'longitud'");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(Map.of("error", "El campo 'ubicacion' es obligatorio para profesionales y debe contener 'latitud' y 'longitud'"));
-                }
-                double latitud = ubicacionMap.get("latitud");
-                double longitud = ubicacionMap.get("longitud");
-                profesional.setUbicacion(latitud, longitud);
-
-                // Log para depurar el objeto Profesional antes de guardar
-                LOGGER.info("Objeto Profesional antes de guardar: " + profesional);
-                LOGGER.info("Ubicacion del profesional: " + profesional.getUbicacion());
-                break;
-            default:
-                LOGGER.warning("Rol no válido: " + registerRequest.getRol());
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("error", "Rol no válido. Use 'cliente' o 'profesional'"));
-        }
-
-        // Guardar el usuario en la base de datos
-        usuarioRepository.save(usuario);
-        LOGGER.info("Usuario registrado exitosamente: " + usuario.getEmail());
+        // Guardar cliente
+        usuarioRepository.save(cliente);
+        LOGGER.info("Cliente registrado exitosamente: " + cliente.getEmail());
 
         // Generar token JWT
-        String token = jwtUtil.create(String.valueOf(usuario.getId()), usuario.getEmail());
-        String rol = determinarRol(usuario);
+        String token = jwtUtil.create(String.valueOf(cliente.getId()), cliente.getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of(
                         "token", token,
-                        "rol", rol,
-                        "idUsuario", usuario.getId(),
-                        "message", "Usuario registrado exitosamente"
+                        "rol", "cliente",
+                        "idUsuario", cliente.getId(),
+                        "message", "Cliente registrado exitosamente"
+                ));
+    }
+
+    public ResponseEntity<?> registerProfesional(ProfesionalRegisterRequest registerRequest) {
+        LOGGER.info("Intentando registrar profesional con email: " + registerRequest.getEmail());
+
+        // Validaciones comunes
+        if (isEmailOrUsernameTaken(registerRequest.getEmail(), registerRequest.getUsuario())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "El email o nombre de usuario ya está registrado"));
+        }
+
+        if (isInvalidPassword(registerRequest.getContrasena())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "La contraseña es requerida"));
+        }
+
+        // Validaciones específicas para profesional
+        if (registerRequest.getEspecialidad() == null || registerRequest.getEspecialidad().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "La especialidad es requerida"));
+        }
+
+        if (registerRequest.getPrecioHora() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "El precio por hora es requerido"));
+        }
+
+        if (registerRequest.getUbicacion() == null ||
+                !registerRequest.getUbicacion().containsKey("latitud") ||
+                !registerRequest.getUbicacion().containsKey("longitud")) {
+            LOGGER.warning("El campo 'ubicacion' es obligatorio para profesionales");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "El campo 'ubicacion' es obligatorio y debe contener 'latitud' y 'longitud'"));
+        }
+
+        // Crear profesional
+        Profesional profesional = new Profesional();
+        profesional.setNombre(registerRequest.getNombre());
+        profesional.setNombreUsuario(registerRequest.getUsuario());
+        profesional.setEmail(registerRequest.getEmail());
+        profesional.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
+        profesional.setValoracion(0.0f);
+        profesional.setEspecialidad(registerRequest.getEspecialidad());
+        profesional.setPrecioHora(registerRequest.getPrecioHora());
+        profesional.setHorarioDisponible(registerRequest.getHorarioDisponible());
+        profesional.setExperiencia(registerRequest.getExperiencia());
+        profesional.setCertificaciones(registerRequest.getCertificaciones());
+        profesional.setCalificacionPromedio(0.0f);
+        profesional.setTotalContrataciones(0);
+        profesional.setUbicacion(
+                registerRequest.getUbicacion().get("latitud"),
+                registerRequest.getUbicacion().get("longitud")
+        );
+
+        // Guardar profesional
+        usuarioRepository.save(profesional);
+        LOGGER.info("Profesional registrado exitosamente: " + profesional.getEmail());
+
+        // Generar token JWT
+        String token = jwtUtil.create(String.valueOf(profesional.getId()), profesional.getEmail());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of(
+                        "token", token,
+                        "rol", "profesional",
+                        "idUsuario", profesional.getId(),
+                        "message", "Profesional registrado exitosamente"
                 ));
     }
 
@@ -213,6 +228,15 @@ public class AuthServiceImpl implements AuthService {
 
         tokenRepository.delete(resetToken);
         LOGGER.info("Contraseña restablecida para: " + usuario.getEmail());
+    }
+
+    private boolean isEmailOrUsernameTaken(String email, String username) {
+        return usuarioRepository.findByEmail(email) != null ||
+                usuarioRepository.findByNombreUsuario(username) != null;
+    }
+
+    private boolean isInvalidPassword(String password) {
+        return password == null || password.isEmpty();
     }
 
     private void sendPasswordResetEmail(String email, String token) throws MessagingException {

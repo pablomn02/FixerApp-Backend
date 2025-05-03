@@ -38,6 +38,5 @@ public abstract class Usuario {
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public Float getValoracion() { return valoracion; }
     public void setValoracion(Float valoracion) { this.valoracion = valoracion; }
 }

@@ -21,10 +21,6 @@ public class Cliente extends Usuario {
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> preferencias;
 
-    @Column(name = "ubicacion", columnDefinition = "GEOMETRY", nullable = false)
-    @JsonIgnore // Ignorar el campo Point durante la serialización
-    private Point ubicacion;
-
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
     private Set<Contratacion> contrataciones = new LinkedHashSet<>();
@@ -33,31 +29,10 @@ public class Cliente extends Usuario {
     @JsonIgnore
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
-    // Método para establecer la ubicación
-    public void setUbicacion(double latitud, double longitud) {
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Point point = geometryFactory.createPoint(new Coordinate(longitud, latitud));
-        point.setSRID(4326);
-        this.ubicacion = point;
-    }
-
-    // Método personalizado para serializar la ubicación como JSON
-    @JsonGetter("ubicacion")
-    public Map<String, Double> getUbicacionAsMap() {
-        if (ubicacion == null) {
-            return null;
-        }
-        return Map.of(
-                "latitud", ubicacion.getY(),
-                "longitud", ubicacion.getX()
-        );
-    }
 
     // Getters y setters
     public Map<String, Object> getPreferencias() { return preferencias; }
     public void setPreferencias(Map<String, Object> preferencias) { this.preferencias = preferencias; }
-    public Point getUbicacion() { return ubicacion; }
-    public void setUbicacion(Point ubicacion) { this.ubicacion = ubicacion; }
     public Set<Contratacion> getContrataciones() { return contrataciones; }
     public void setContrataciones(Set<Contratacion> contrataciones) { this.contrataciones = contrataciones; }
     public Set<Valoracion> getValoraciones() { return valoraciones; }
