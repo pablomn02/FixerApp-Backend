@@ -1,10 +1,15 @@
 package org.example.fixerappbackend.controller;
 
+import org.example.fixerappbackend.dto.UpdateUsuarioDTO;
+import org.example.fixerappbackend.model.Cliente;
+import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.Usuario;
 import org.example.fixerappbackend.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +19,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @GetMapping
     @CrossOrigin("*")
     public List<Usuario> getAllUsuarios() {
@@ -22,9 +30,10 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @CrossOrigin("*")
-    public Optional<Usuario> getUsuarioById(@PathVariable Integer id) {
-        return usuarioService.findById(id);
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Integer id) {
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        return usuario.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 
 }

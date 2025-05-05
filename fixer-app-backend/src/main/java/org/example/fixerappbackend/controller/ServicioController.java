@@ -1,6 +1,7 @@
 package org.example.fixerappbackend.controller;
 
 
+import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.Servicio;
 import org.example.fixerappbackend.model.Usuario;
 import org.example.fixerappbackend.service.ServicioService;
@@ -27,5 +28,11 @@ public class ServicioController {
     @CrossOrigin("*")
     public List<Servicio> getServiciosByCategoriaId(@PathVariable Integer idCategoria) {
         return servicioService.findServiciosByCategoriaId(idCategoria);
+    }
+
+    @GetMapping("/{servicioId}/profesionales")
+    @CrossOrigin("*")
+    public List<Profesional> obtenerProfesionalesPorServicio(@PathVariable Long servicioId) {
+        return servicioService.obtenerProfesionalesPorServicio(servicioId);
     }
 }

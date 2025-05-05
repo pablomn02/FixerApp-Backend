@@ -1,4 +1,4 @@
-package org.example.fixerappbackend.config;
+package org.example.fixerappbackend.util;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -23,4 +23,19 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> findById(Integer id) {
         return usuarioRepo.findById(id);
     }
+
+    @Override
+    public boolean existsByNombreUsuario(String nombreUsuario) {
+        return usuarioRepo.existsByNombreUsuario(nombreUsuario);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return usuarioRepo.existsByEmail(email);
+    }
+
+    @Override
+    public Usuario save(Usuario usuario) {
+        return usuarioRepo.save(usuario);
+    }
 }

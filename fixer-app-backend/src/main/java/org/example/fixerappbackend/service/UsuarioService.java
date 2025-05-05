@@ -9,4 +9,10 @@ public interface UsuarioService {
     List<Usuario> findAll();
 
     Optional<Usuario> findById(Integer id);
+
+    boolean existsByNombreUsuario(String nombreUsuario);
+
+    boolean existsByEmail(String email);
+
+    Usuario save(Usuario usuario);
 }

@@ -1,6 +1,8 @@
 package org.example.fixerappbackend.service.impl;
 
+import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.Servicio;
+import org.example.fixerappbackend.repo.ProfesionalRepo;
 import org.example.fixerappbackend.repo.ServicioRepo;
 import org.example.fixerappbackend.service.ServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class ServicioServiceImpl implements ServicioService {
     @Autowired
     private ServicioRepo servicioRepo;
 
+    @Autowired
+    private ProfesionalRepo profesionalRepo;
+
     @Override
     public List<Servicio> findAll() {
         return servicioRepo.findAll();
@@ -22,5 +27,10 @@ public class ServicioServiceImpl implements ServicioService {
     @Override
     public List<Servicio> findServiciosByCategoriaId(Integer idCategoria) {
         return servicioRepo.findServiciosByCategoriaId(idCategoria);
+    }
+
+    @Override
+    public List<Profesional> obtenerProfesionalesPorServicio(Long servicioId) {
+        return profesionalRepo.findProfesionalesByServicioId(servicioId);
     }
 }
