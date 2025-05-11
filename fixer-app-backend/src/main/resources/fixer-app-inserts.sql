@@ -5,23 +5,23 @@ USE fixer_app;
 
 -- Tablas principales
 CREATE TABLE categorias (
-                            id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+                            id_categoria BIGINT PRIMARY KEY AUTO_INCREMENT,
                             nombre VARCHAR(50) NOT NULL,
                             descripcion TINYTEXT,
                             CONSTRAINT nombre_categoria_unique UNIQUE (nombre)
 ) ENGINE=InnoDB;
 
 CREATE TABLE servicios (
-                           id_servicio INT PRIMARY KEY AUTO_INCREMENT,
+                           id_servicio BIGINT PRIMARY KEY AUTO_INCREMENT,
                            nombre VARCHAR(100) NOT NULL,
                            descripcion TEXT,
-                           id_categoria INT NOT NULL,
+                           id_categoria BIGINT NOT NULL,
                            FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 CREATE INDEX idx_servicios_id_categoria ON servicios (id_categoria);
 
 CREATE TABLE usuarios (
-                          id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+                          id_usuario BIGINT PRIMARY KEY AUTO_INCREMENT,
                           nombre VARCHAR(255),
                           nombre_usuario VARCHAR(255) UNIQUE,
                           contraseña VARCHAR(255),
@@ -32,42 +32,42 @@ CREATE TABLE usuarios (
 CREATE TABLE fixer_app.password_reset_tokens (
                                                  id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                                  token VARCHAR(255) NOT NULL UNIQUE,
-                                                 id_usuario INT NOT NULL,
+                                                 id_usuario BIGINT NOT NULL,
                                                  expiry_date DATETIME NOT NULL,
                                                  FOREIGN KEY (id_usuario) REFERENCES fixer_app.usuarios(id_usuario)
 );
 
 CREATE TABLE clientes (
-                          id_usuario INT PRIMARY KEY,
+                          id_usuario BIGINT PRIMARY KEY,
                           preferencias JSON,
                           FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE profesionales (
-                               id_usuario INT PRIMARY KEY,
+                               id_usuario BIGINT PRIMARY KEY,
                                especialidad VARCHAR(100),
                                precio_hora DECIMAL(10,2),
                                horario_disponible JSON,
-                               experiencia INT,
+                               experiencia BIGINT,
                                certificaciones TEXT,
                                calificacion_promedio FLOAT,
-                               total_contrataciones INT,
+                               total_contrataciones BIGINT,
                                ubicacion GEOMETRY NOT NULL,
                                FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 CREATE SPATIAL INDEX idx_profesionales_ubicacion ON profesionales(ubicacion);
 
 CREATE TABLE administradores (
-                                 id_usuario INT PRIMARY KEY,
+                                 id_usuario BIGINT PRIMARY KEY,
                                  nivel_acceso VARCHAR(50),
                                  ultimo_acceso DATETIME,
                                  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE profesional_servicios (
-                                       id_profesional_servicio INT PRIMARY KEY AUTO_INCREMENT,
-                                       id_usuario INT,
-                                       id_servicio INT,
+                                       id_profesional_servicio BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                       id_usuario BIGINT,
+                                       id_servicio BIGINT,
                                        precio DECIMAL(10,2),
                                        descripcion_servicio TEXT,
                                        FOREIGN KEY (id_usuario) REFERENCES profesionales(id_usuario) ON DELETE CASCADE,
@@ -77,12 +77,12 @@ CREATE INDEX idx_profesional_servicios_id_usuario ON profesional_servicios (id_u
 CREATE INDEX idx_profesional_servicios_id_servicio ON profesional_servicios (id_servicio);
 
 CREATE TABLE contrataciones (
-                                id_contratacion INT PRIMARY KEY AUTO_INCREMENT,
-                                id_usuario INT,
-                                id_profesional_servicio INT,
+                                id_contratacion BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                id_usuario BIGINT,
+                                id_profesional_servicio BIGINT,
                                 fecha_hora DATETIME,
                                 estado VARCHAR(20) DEFAULT 'pendiente',
-                                duracion_estimada INT,
+                                duracion_estimada BIGINT,
                                 costo_total DECIMAL(10,2),
                                 FOREIGN KEY (id_usuario) REFERENCES clientes(id_usuario) ON DELETE SET NULL,
                                 FOREIGN KEY (id_profesional_servicio) REFERENCES profesional_servicios(id_profesional_servicio) ON DELETE SET NULL
@@ -91,13 +91,13 @@ CREATE INDEX idx_contrataciones_id_usuario ON contrataciones (id_usuario);
 CREATE INDEX idx_contrataciones_id_profesional_servicio ON contrataciones (id_profesional_servicio);
 
 CREATE TABLE valoraciones (
-                              id_valoracion INT PRIMARY KEY AUTO_INCREMENT,
-                              id_usuario INT,
-                              id_usuario_profesional INT,
-                              puntuacion INT CHECK (puntuacion BETWEEN 1 AND 5),
+                              id_valoracion BIGINT PRIMARY KEY AUTO_INCREMENT,
+                              id_usuario BIGINT,
+                              id_usuario_profesional BIGINT,
+                              puntuacion BIGINT CHECK (puntuacion BETWEEN 1 AND 5),
                               comentario TEXT,
                               fecha_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                              id_contratacion INT,
+                              id_contratacion BIGINT,
                               FOREIGN KEY (id_usuario) REFERENCES clientes(id_usuario) ON DELETE SET NULL,
                               FOREIGN KEY (id_usuario_profesional) REFERENCES profesionales(id_usuario) ON DELETE SET NULL,
                               FOREIGN KEY (id_contratacion) REFERENCES contrataciones(id_contratacion) ON DELETE SET NULL

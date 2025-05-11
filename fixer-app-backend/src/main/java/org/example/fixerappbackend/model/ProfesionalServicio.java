@@ -14,7 +14,7 @@ public class ProfesionalServicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_profesional_servicio", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -36,8 +36,8 @@ public class ProfesionalServicio {
     private Set<Contratacion> contrataciones = new LinkedHashSet<>();
 
     // Getters y setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public Profesional getProfesional() { return profesional; }
     public void setProfesional(Profesional profesional) { this.profesional = profesional; }
     public Servicio getServicio() { return servicio; }

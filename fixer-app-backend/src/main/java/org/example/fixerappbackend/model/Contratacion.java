@@ -5,7 +5,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ public class Contratacion {
     private ProfesionalServicio profesionalServicio;
 
     @Column(name = "fecha_hora")
-    private Instant fechaHora;
+    private LocalDateTime fechaHora;
 
     @Column(name = "estado", length = 20)
     private String estado;
@@ -43,14 +44,18 @@ public class Contratacion {
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
     // Getters y setters
+
+    public ProfesionalServicio getProfesionalServicio() {
+        return profesionalServicio;
+    }
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
-    public ProfesionalServicio getProfesionalServicio() { return profesionalServicio; }
     public void setProfesionalServicio(ProfesionalServicio profesionalServicio) { this.profesionalServicio = profesionalServicio; }
-    public Instant getFechaHora() { return fechaHora; }
-    public void setFechaHora(Instant fechaHora) { this.fechaHora = fechaHora; }
+    public LocalDateTime getFechaHora() { return fechaHora; }
+    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
     public Integer getDuracionEstimada() { return duracionEstimada; }
