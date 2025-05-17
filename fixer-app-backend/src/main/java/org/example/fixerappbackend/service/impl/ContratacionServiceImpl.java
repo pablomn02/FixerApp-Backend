@@ -2,11 +2,9 @@ package org.example.fixerappbackend.service.impl;
 
 import org.example.fixerappbackend.dto.ContratacionCreateRequest;
 import org.example.fixerappbackend.dto.ContratacionDTO;
-import org.example.fixerappbackend.model.Cliente;
-import org.example.fixerappbackend.model.Contratacion;
-import org.example.fixerappbackend.model.Profesional;
-import org.example.fixerappbackend.model.ProfesionalServicio;
+import org.example.fixerappbackend.model.*;
 import org.example.fixerappbackend.repo.ContratacionRepo;
+import org.example.fixerappbackend.repo.HoraOcupadaRepo;
 import org.example.fixerappbackend.service.ClienteService;
 import org.example.fixerappbackend.service.ContratacionService;
 import org.example.fixerappbackend.service.ProfesionalServicioService;
@@ -33,6 +31,9 @@ public class ContratacionServiceImpl implements ContratacionService {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private HoraOcupadaRepo horaOcupadaRepo;
+
     @Override
     public List<Contratacion> getAll() {
         return contratacionRepo.findAll();
@@ -44,53 +45,47 @@ public class ContratacionServiceImpl implements ContratacionService {
     }
 
     @Override
-    public void validarDisponibilidad(Profesional profesional, LocalDateTime fechaHoraUTC) {
+    public void validarDisponibilidad(ProfesionalServicio profesionalServicio, LocalDateTime fechaHoraUTC, int duracion) {
+        Profesional profesional = profesionalServicio.getProfesional();
         Map<String, Object> horarioDisponible = profesional.getHorarioDisponible();
         if (horarioDisponible == null) {
             throw new RuntimeException("El profesional no tiene un horario de disponibilidad configurado.");
         }
 
-        ZonedDateTime fechaHoraUTCZoned = fechaHoraUTC.atZone(ZoneId.of("UTC"));
-        ZonedDateTime fechaHoraMadrid = fechaHoraUTCZoned.withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+        // Convertimos de UTC a horario de Madrid para verificar la lógica local
+        ZonedDateTime fechaHoraMadrid = fechaHoraUTC.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         LocalDateTime fechaHoraLocal = fechaHoraMadrid.toLocalDateTime();
+        LocalDate fechaLocal = fechaHoraLocal.toLocalDate();
+        LocalTime horaInicio = fechaHoraLocal.toLocalTime();
+        LocalTime horaFin = horaInicio.plusMinutes(duracion);
 
         String diaSemana = fechaHoraLocal.getDayOfWeek()
                 .getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"))
                 .toLowerCase();
 
-        System.out.println("Día de la semana (local): " + diaSemana);
-        System.out.println("Hora solicitada (local): " + fechaHoraLocal.toLocalTime());
-
         Object rangos = horarioDisponible.get(diaSemana);
-        if (rangos == null || rangos.toString().equalsIgnoreCase("null")) {
-            System.out.println("El profesional no trabaja el día: " + diaSemana);
-            throw new RuntimeException("El profesional no trabaja el día: " + diaSemana);
-        }
+        if (!(rangos instanceof List<?> lista)) throw new RuntimeException("Formato horario inválido");
 
-        if (!(rangos instanceof List<?> lista)) {
-            System.out.println("Formato de horario inválido para el día: " + diaSemana);
-            throw new RuntimeException("Formato de horario incorrecto para el día: " + diaSemana);
-        }
-
-        LocalTime horaSolicitada = fechaHoraLocal.toLocalTime();
-
-        boolean disponible = lista.stream().anyMatch(r -> {
+        boolean enRango = lista.stream().anyMatch(r -> {
             if (r instanceof Map<?, ?> rango) {
-                String inicioStr = (String) rango.get("inicio");
-                String finStr = (String) rango.get("fin");
-                if (inicioStr != null && finStr != null) {
-                    LocalTime inicio = LocalTime.parse(inicioStr);
-                    LocalTime fin = LocalTime.parse(finStr);
-                    System.out.println("Comparando con rango: " + inicio + " - " + fin);
-                    return !horaSolicitada.isBefore(inicio) && horaSolicitada.isBefore(fin.plusMinutes(1));
-                }
+                LocalTime inicio = LocalTime.parse((String) rango.get("inicio"));
+                LocalTime fin = LocalTime.parse((String) rango.get("fin"));
+                return !horaInicio.isBefore(inicio) && !horaFin.isAfter(fin);
             }
             return false;
         });
 
-        if (!disponible) {
-            System.out.println("Hora solicitada fuera del horario disponible.");
+        if (!enRango) {
             throw new RuntimeException("El profesional no está disponible en el horario solicitado.");
+        }
+
+        // Verificar solapamiento en hora local
+        boolean solapada = horaOcupadaRepo.existsSolapamiento(
+                profesionalServicio, fechaLocal, horaInicio, horaFin
+        );
+
+        if (solapada) {
+            throw new RuntimeException("El horario solicitado ya está ocupado.");
         }
 
         System.out.println("Hora disponible confirmada.");
@@ -102,7 +97,11 @@ public class ContratacionServiceImpl implements ContratacionService {
         List<Contratacion> contrataciones = contratacionRepo.findByProfesionalServicioIdAndFecha(idProfesionalServicio, localDate);
 
         return contrataciones.stream()
-                .map(c -> c.getFechaHora().toLocalTime().toString().substring(0, 5))
+                .map(c -> c.getFechaHora()
+                        .atZone(ZoneId.of("UTC"))
+                        .withZoneSameInstant(ZoneId.of("Europe/Madrid"))
+                        .toLocalTime()
+                        .toString().substring(0, 5))
                 .toList();
     }
 
@@ -128,7 +127,7 @@ public class ContratacionServiceImpl implements ContratacionService {
                     .findById(request.getIdUsuario())
                     .orElseThrow(() -> new RuntimeException("El usuario no es un cliente válido."));
 
-            this.validarDisponibilidad(profesionalServicio.getProfesional(), request.getFechaHora());
+            this.validarDisponibilidad(profesionalServicio, request.getFechaHora(), request.getDuracionEstimada());
 
             Contratacion nueva = new Contratacion();
             nueva.setCliente(cliente);
@@ -139,6 +138,18 @@ public class ContratacionServiceImpl implements ContratacionService {
             nueva.setEstado("pendiente");
 
             Contratacion guardada = this.save(nueva);
+
+            // Guardar hora ocupada en horario local Madrid
+            ZonedDateTime zonedMadrid = request.getFechaHora().atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Europe/Madrid"));
+            HoraOcupada bloqueada = new HoraOcupada();
+            bloqueada.setProfesionalServicio(profesionalServicio);
+            bloqueada.setFecha(zonedMadrid.toLocalDate());
+            bloqueada.setHoraInicio(zonedMadrid.toLocalTime());
+            bloqueada.setHoraFin(zonedMadrid.toLocalTime().plusMinutes(request.getDuracionEstimada()));
+            bloqueada.setEstado("ocupado");
+
+            horaOcupadaRepo.save(bloqueada);
+
             return ResponseEntity.ok(ContratacionDTO.fromEntity(guardada));
 
         } catch (Exception e) {

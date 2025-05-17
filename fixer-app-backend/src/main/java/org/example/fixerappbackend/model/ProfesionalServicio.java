@@ -1,5 +1,6 @@
 package org.example.fixerappbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,6 +20,7 @@ public class ProfesionalServicio {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_usuario")
+    @JsonBackReference
     private Profesional profesional;
 
     @ManyToOne(fetch = FetchType.LAZY)

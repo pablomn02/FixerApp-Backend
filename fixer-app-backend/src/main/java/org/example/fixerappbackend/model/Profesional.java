@@ -2,6 +2,7 @@ package org.example.fixerappbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -45,6 +46,7 @@ public class Profesional extends Usuario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "servicio_id")
+    @JsonManagedReference
     private Servicio servicio;
 
     @OneToMany(mappedBy = "profesional")

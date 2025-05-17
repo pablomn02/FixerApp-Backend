@@ -2,7 +2,7 @@ package org.example.fixerappbackend.service;
 
 import org.example.fixerappbackend.dto.ContratacionCreateRequest;
 import org.example.fixerappbackend.model.Contratacion;
-import org.example.fixerappbackend.model.Profesional;
+import org.example.fixerappbackend.model.ProfesionalServicio;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
@@ -14,9 +14,9 @@ public interface ContratacionService {
 
     List<Contratacion> getAll();
 
-    void validarDisponibilidad(Profesional profesional, LocalDateTime fechaHora);
-
     List<String> getHorasOcupadas(Long idProfesionalServicio, String fecha);
+
+    void validarDisponibilidad(ProfesionalServicio profesionalServicio, LocalDateTime fechaHoraUTC, int duracion);
 
     ResponseEntity<?> crearContratacion(ContratacionCreateRequest request);
 }

@@ -111,3 +111,17 @@ CREATE TABLE valoraciones (
 CREATE INDEX idx_valoraciones_id_usuario ON valoraciones (id_usuario);
 CREATE INDEX idx_valoraciones_id_usuario_profesional ON valoraciones (id_usuario_profesional);
 CREATE INDEX idx_valoraciones_id_contratacion ON valoraciones (id_contratacion);
+
+-- ✅ NUEVA TABLA: Bloques de tiempo ocupados
+
+CREATE TABLE horas_ocupadas (
+                                id_hora_ocupada BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                id_profesional_servicio BIGINT NOT NULL,
+                                fecha DATE NOT NULL,
+                                hora_inicio TIME NOT NULL,
+                                hora_fin TIME NOT NULL,
+                                estado VARCHAR(20) DEFAULT 'ocupado',
+                                FOREIGN KEY (id_profesional_servicio) REFERENCES profesional_servicios(id_profesional_servicio) ON DELETE CASCADE
+);
+CREATE INDEX idx_horas_ocupadas_fecha ON horas_ocupadas (fecha);
+CREATE INDEX idx_horas_ocupadas_id_prof ON horas_ocupadas (id_profesional_servicio);

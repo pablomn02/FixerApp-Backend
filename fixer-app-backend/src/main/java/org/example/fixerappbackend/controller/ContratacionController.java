@@ -43,9 +43,6 @@ public class ContratacionController {
         return contratacionService.crearContratacion(request);
     }
 
-
-
-
     @GetMapping("/ocupadas/{idProfesionalServicio}/{fecha}")
     public List<String> getHorasOcupadas(
             @PathVariable Long idProfesionalServicio,
