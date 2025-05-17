@@ -1,100 +1,214 @@
--- 1. Crear Categorías
-INSERT INTO categorias (nombre, descripcion) VALUES
-                                                 ('Hogar', 'Servicios para el mantenimiento del hogar'),
-                                                 ('Belleza', 'Servicios de cuidado personal'),
-                                                 ('Tecnología', 'Reparaciones y soporte técnico'),
-                                                 ('Transporte', 'Mudanzas y logística'),
-                                                 ('Educación', 'Clases particulares y tutorías'),
-                                                 ('Salud', 'Servicios médicos y bienestar'),
-                                                 ('Mascotas', 'Cuidado y adiestramiento de animales'),
-                                                 ('Eventos', 'Organización y gestión de eventos'),
-                                                 ('Construcción', 'Servicios de construcción y reformas'),
-                                                 ('Gastronomía', 'Cocina y catering profesional');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Hogar', 'Servicios relacionados con el hogar');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Educación', 'Clases particulares y formación');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Salud', 'Cuidado y bienestar físico');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Tecnología', 'Asistencia tecnológica');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Construcción', 'Obras y reformas');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Belleza', 'Servicios estéticos');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Mascotas', 'Cuidado de animales');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Eventos', 'Organización de celebraciones');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Automoción', 'Reparación y mantenimiento de vehículos');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Consultoría', 'Asesoría profesional');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Arte', 'Servicios artísticos');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Jardinería', 'Cuidado de jardines');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Seguridad', 'Vigilancia y protección');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Reparaciones', 'Arreglo de electrodomésticos');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Limpieza', 'Limpieza doméstica y profesional');
 
--- 2. Crear Servicios (20 en total)
-INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES
-                                                              ('Reparación de tuberías', 'Reparación de fugas y tuberías', 1),
-                                                              ('Instalaciones eléctricas', 'Montaje de sistemas eléctricos', 1),
-                                                              ('Corte de cabello', 'Peluquería para hombres y mujeres', 2),
-                                                              ('Tratamientos faciales', 'Limpiezas y cuidado de la piel', 2),
-                                                              ('Reparación de PC', 'Arreglo de computadoras y laptops', 3),
-                                                              ('Reparación de móviles', 'Reparación de celulares', 3),
-                                                              ('Mudanzas locales', 'Traslado de bienes en la misma ciudad', 4),
-                                                              ('Mudanzas nacionales', 'Traslados entre ciudades', 4),
-                                                              ('Clases de matemáticas', 'Tutorías personalizadas', 5),
-                                                              ('Clases de inglés', 'Clases particulares de inglés', 5),
-                                                              ('Consulta médica', 'Medicina general y chequeos', 6),
-                                                              ('Terapia física', 'Rehabilitación de lesiones', 6),
-                                                              ('Paseo de perros', 'Servicio de paseo de mascotas', 7),
-                                                              ('Cuidado de gatos', 'Visitas a domicilio para gatos', 7),
-                                                              ('Organización de bodas', 'Planificación completa de bodas', 8),
-                                                              ('Organización de cumpleaños', 'Organización de fiestas', 8),
-                                                              ('Obras de albañilería', 'Construcción de estructuras', 9),
-                                                              ('Pintura de interiores', 'Decoración y pintura de hogares', 9),
-                                                              ('Chef privado', 'Cocina personalizada a domicilio', 10),
-                                                              ('Catering para eventos', 'Servicio de comidas para eventos', 10);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Hogar Servicio 1', 'Descripción de hogar servicio 1', 1);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Hogar Servicio 2', 'Descripción de hogar servicio 2', 1);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Hogar Servicio 3', 'Descripción de hogar servicio 3', 1);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Educación Servicio 1', 'Descripción de educación servicio 1', 2);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Educación Servicio 2', 'Descripción de educación servicio 2', 2);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Educación Servicio 3', 'Descripción de educación servicio 3', 2);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Salud Servicio 1', 'Descripción de salud servicio 1', 3);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Salud Servicio 2', 'Descripción de salud servicio 2', 3);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Salud Servicio 3', 'Descripción de salud servicio 3', 3);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Tecnología Servicio 1', 'Descripción de tecnología servicio 1', 4);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Tecnología Servicio 2', 'Descripción de tecnología servicio 2', 4);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Tecnología Servicio 3', 'Descripción de tecnología servicio 3', 4);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Construcción Servicio 1', 'Descripción de construcción servicio 1', 5);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Construcción Servicio 2', 'Descripción de construcción servicio 2', 5);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Construcción Servicio 3', 'Descripción de construcción servicio 3', 5);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Belleza Servicio 1', 'Descripción de belleza servicio 1', 6);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Belleza Servicio 2', 'Descripción de belleza servicio 2', 6);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Belleza Servicio 3', 'Descripción de belleza servicio 3', 6);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Mascotas Servicio 1', 'Descripción de mascotas servicio 1', 7);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Mascotas Servicio 2', 'Descripción de mascotas servicio 2', 7);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Mascotas Servicio 3', 'Descripción de mascotas servicio 3', 7);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Eventos Servicio 1', 'Descripción de eventos servicio 1', 8);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Eventos Servicio 2', 'Descripción de eventos servicio 2', 8);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Eventos Servicio 3', 'Descripción de eventos servicio 3', 8);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Automoción Servicio 1', 'Descripción de automoción servicio 1', 9);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Automoción Servicio 2', 'Descripción de automoción servicio 2', 9);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Automoción Servicio 3', 'Descripción de automoción servicio 3', 9);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Consultoría Servicio 1', 'Descripción de consultoría servicio 1', 10);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Consultoría Servicio 2', 'Descripción de consultoría servicio 2', 10);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Consultoría Servicio 3', 'Descripción de consultoría servicio 3', 10);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Arte Servicio 1', 'Descripción de arte servicio 1', 11);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Arte Servicio 2', 'Descripción de arte servicio 2', 11);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Arte Servicio 3', 'Descripción de arte servicio 3', 11);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Jardinería Servicio 1', 'Descripción de jardinería servicio 1', 12);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Jardinería Servicio 2', 'Descripción de jardinería servicio 2', 12);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Jardinería Servicio 3', 'Descripción de jardinería servicio 3', 12);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Seguridad Servicio 1', 'Descripción de seguridad servicio 1', 13);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Seguridad Servicio 2', 'Descripción de seguridad servicio 2', 13);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Seguridad Servicio 3', 'Descripción de seguridad servicio 3', 13);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Reparaciones Servicio 1', 'Descripción de reparaciones servicio 1', 14);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Reparaciones Servicio 2', 'Descripción de reparaciones servicio 2', 14);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Reparaciones Servicio 3', 'Descripción de reparaciones servicio 3', 14);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Limpieza Servicio 1', 'Descripción de limpieza servicio 1', 15);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Limpieza Servicio 2', 'Descripción de limpieza servicio 2', 15);
+INSERT INTO servicios (nombre, descripcion, id_categoria) VALUES ('Limpieza Servicio 3', 'Descripción de limpieza servicio 3', 15);
 
--- 3. Insertar Usuarios Clientes
-INSERT INTO usuarios (nombre, nombre_usuario, contraseña, email, valoracion) VALUES
-                                                                                 ('Laura Pérez', 'cliente1', 'pass123', 'cliente1@example.com', 4.7),
-                                                                                 ('Miguel Torres', 'cliente2', 'pass123', 'cliente2@example.com', 4.6),
-                                                                                 ('Sofía García', 'cliente3', 'pass123', 'cliente3@example.com', 4.8),
-                                                                                 ('Andrés Díaz', 'cliente4', 'pass123', 'cliente4@example.com', 4.5),
-                                                                                 ('Lucía Romero', 'cliente5', 'pass123', 'cliente5@example.com', 4.7);
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (1, 'Abraham Salinas-Mulet', 'ebarcena0', 'hashed_pass', 'calcaraz@costa.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (2, 'Susana Gámez Cobos', 'emmamartinez1', 'hashed_pass', 'nico89@manzanares.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (3, 'Genoveva Ripoll Agullo', 'abascalmiguela2', 'hashed_pass', 'tomasvera@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (4, 'Rodolfo Ismael Gomila Recio', 'ncastrillo3', 'hashed_pass', 'silviacasals@gmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (5, 'Sofía de Páez', 'amaya824', 'hashed_pass', 'sebastianmoya@navarro.org', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (6, 'Salud del Garrido', 'rosendo125', 'hashed_pass', 'hcabrera@gual.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (7, 'Natalio Muro Carnero', 'tamaritjose-manuel6', 'hashed_pass', 'wiriarte@perez.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (8, 'Ana Tirado Pons', 'valcarcellola7', 'hashed_pass', 'espanollara@abascal.org', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (9, 'Clímaco Flor Crespo', 'aroa278', 'hashed_pass', 'linaresprimitiva@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (10, 'Ligia del Santana', 'estefaniafabregat9', 'hashed_pass', 'carlos57@gmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (11, 'Brígida Valenciano Alcalde', 'leivamaria-jesus10', 'hashed_pass', 'asdrubalayuso@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (12, 'Flora Quero Arteaga', 'domitila5711', 'hashed_pass', 'aruiz@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (13, 'Demetrio Marti Hernando', 'yayala12', 'hashed_pass', 'macaria49@gmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (14, 'Benito Vera Abascal', 'ainaracamino13', 'hashed_pass', 'ncatala@anton-valera.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (15, 'Bibiana Perea-Izaguirre', 'epifanio1614', 'hashed_pass', 'raquelmuro@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (16, 'Rolando Albero Casares', 'cruzeufemia15', 'hashed_pass', 'torrecillaarmida@pedro-lamas.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (17, 'Ileana Coronado Benitez', 'khidalgo16', 'hashed_pass', 'ruth02@alcalde.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (18, 'Jose Luis Pepe Fuente Crespi', 'albinanogues17', 'hashed_pass', 'olalla41@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (19, 'Jose Francisco Villar', 'vbolanos18', 'hashed_pass', 'cuevasborja@murcia.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (20, 'Claudio Arranz Pazos', 'arizaxiomara19', 'hashed_pass', 'palaciomanola@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (21, 'Alexandra de Vall', 'olasa20', 'hashed_pass', 'candelapacheco@canals-marques.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (22, 'Nacho Calatayud', 'valeriovilaplana21', 'hashed_pass', 'ccabezas@figueroa.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (23, 'Natividad del Bas', 'aranarufina22', 'hashed_pass', 'xblanco@gmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (24, 'Gertrudis Alfonso-Barón', 'melania2023', 'hashed_pass', 'aurorabanos@pons-quintanilla.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (25, 'Loida Martín Duarte', 'ipalau24', 'hashed_pass', 'gerardo64@roca-mir.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (26, 'Lorenza del Silva', 'ledesmaalfredo25', 'hashed_pass', 'itorrent@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (27, 'Adolfo Campillo Berenguer', 'casalsnereida26', 'hashed_pass', 'juanitaplanas@esteban.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (28, 'María Ángeles Mascaró Cantón', 'royozacarias27', 'hashed_pass', 'santamarianatividad@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (29, 'Manola Morales Torrecilla', 'mansonazario28', 'hashed_pass', 'piedadbarbera@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (30, 'Máxima Ferrera Piña', 'nolmedo29', 'hashed_pass', 'eduardocasanovas@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (31, 'María Cristina Vilanova Juliá', 'jose9330', 'hashed_pass', 'gasconmohamed@gmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (32, 'Carmen de Perales', 'dbelda31', 'hashed_pass', 'nidia33@pinol-jerez.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (33, 'Rafael Sarabia Seco', 'vinashector32', 'hashed_pass', 'andres-felipemontserrat@estevez.net', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (34, 'Chuy Gómez Puerta', 'danilo0633', 'hashed_pass', 'jennyleal@roldan-quintana.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (35, 'Nazario Cuesta Álamo', 'hector8534', 'hashed_pass', 'eva-mariaavila@vicens.net', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (36, 'Selena Alexandra Talavera Ángel', 'puenteeugenio35', 'hashed_pass', 'bibianacamps@valls.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (37, 'Jerónimo Gallo Alonso', 'luznico36', 'hashed_pass', 'rbanos@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (38, 'Piedad Morell Alonso', 'olalla1637', 'hashed_pass', 'gil57@espanol.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (39, 'Lidia del Santamaría', 'rodriguezana-belen38', 'hashed_pass', 'jose34@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (40, 'Leopoldo Fiol Conesa', 'icarrillo39', 'hashed_pass', 'fajardosamuel@azorin.org', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (41, 'Ciro Plana Palomares', 'sanchezmireia40', 'hashed_pass', 'hoyosrosa@yahoo.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (42, 'Che Losa Barriga', 'benavidesmaria-del-carmen41', 'hashed_pass', 'martiriouriarte@gascon.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (43, 'Benigno Alfonso', 'gpazos42', 'hashed_pass', 'isidoracantero@peinado.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (44, 'Ema Álvaro Ribes', 'paz4343', 'hashed_pass', 'estefaniazurita@casals.org', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (45, 'Rosalina Narváez Ocaña', 'paula7844', 'hashed_pass', 'eutropio02@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (46, 'Julie Burgos Riquelme', 'ferrerpepito45', 'hashed_pass', 'redondoteofila@gmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (47, 'Clotilde Candela Tena Mora', 'adadiareyes46', 'hashed_pass', 'rmontesinos@hotmail.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (48, 'Tito Quesada Villa', 'tnebot47', 'hashed_pass', 'david28@nunez.es', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (49, 'Silvestre Quero Cazorla', 'epifaniorojas48', 'hashed_pass', 'ccano@benavente.com', 0, 'profesional');
+INSERT INTO usuarios (id_usuario, nombre, nombre_usuario, contraseña, email, valoracion, tipo_usuario) VALUES (50, 'Francisco Javier Alcolea Quero', 'augustoiborra49', 'hashed_pass', 'carbonellche@hotmail.com', 0, 'profesional');
 
--- 4. Asociar Usuarios a Clientes
-INSERT INTO clientes (id_usuario, preferencias) VALUES
-                                                    (1, '{"preferencia":"rápido"}'),
-                                                    (2, '{"preferencia":"económico"}'),
-                                                    (3, '{"preferencia":"cercano"}'),
-                                                    (4, '{"preferencia":"flexible"}'),
-                                                    (5, '{"preferencia":"calidad"}');
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (1, 'Scientist, forensic', 37.38, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 1, 'Dolores dolorem alias exercitationem doloribus voluptates.', 4.48, 31, 65.583529, 168.080077, 9);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (2, 'Environmental health practitioner', 40.78, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Ea deleniti recusandae maiores dignissimos expedita libero suscipit.', 3.17, 54, -39.757501, 50.933426, 2);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (3, 'Learning disability nurse', 18.28, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 8, 'Nam molestias voluptate consequatur.', 4.01, 3, -18.057891, 173.213886, 13);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (4, 'Accountant, chartered certified', 40.06, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Minus molestiae soluta magnam expedita aut minima.', 3.84, 57, 6.518832, 158.12537, 18);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (5, 'Retail buyer', 43.33, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 1, 'Porro sint molestias nostrum ex dolore minus.', 4.52, 20, -69.238484, 169.344219, 22);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (6, 'Research scientist (medical)', 24.73, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 7, 'Aspernatur doloremque non aperiam laboriosam mollitia blanditiis iure.', 4.91, 43, -57.857792, 166.512353, 6);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (7, 'Buyer, retail', 28.3, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 12, 'Nam adipisci totam voluptas.', 4.69, 77, -42.216054, -140.975082, 3);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (8, 'Legal executive', 40.54, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Dolorem soluta possimus nulla.', 3.25, 48, -11.778523, 82.276221, 36);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (9, 'Risk manager', 25.26, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 20, 'Veniam labore voluptas quisquam ipsum.', 4.77, 46, -33.538083, 38.235187, 13);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (10, 'Civil engineer, contracting', 39.66, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 2, 'Fuga quasi eligendi consequuntur eius excepturi ducimus itaque.', 4.32, 98, 2.056151, -41.329644, 6);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (11, 'Ecologist', 44.94, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 4, 'Eaque vero enim doloribus eaque.', 3.76, 58, 13.785848, -88.299897, 11);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (12, 'Agricultural engineer', 27.96, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 7, 'Eius odit dolorum adipisci dicta nam dicta.', 4.34, 89, 37.581351, -179.391139, 39);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (13, 'Engineer, production', 37.22, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Illum dicta dolor.', 4.46, 20, 76.603529, 13.842719, 25);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (14, 'Financial risk analyst', 24.45, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Quod voluptatem aspernatur voluptas nobis.', 3.44, 41, 39.497399, 87.102028, 15);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (15, 'Event organiser', 43.76, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 11, 'Sunt ratione quisquam ut minus.', 3.8, 8, 30.71313, -48.88027, 37);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (16, 'Chartered loss adjuster', 45.67, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 11, 'Ea dignissimos porro laudantium harum.', 3.43, 63, -77.404713, 59.125566, 42);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (17, 'Maintenance engineer', 31.06, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 9, 'Earum exercitationem minima velit.', 3.28, 95, -30.563993, -66.990367, 35);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (18, 'Chemist, analytical', 24.2, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 19, 'Porro dolorem deserunt.', 3.86, 74, 62.64275, 79.111534, 24);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (19, 'Engineer, maintenance', 22.68, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 5, 'Eos et animi id assumenda et.', 4.02, 11, -35.941991, -68.657521, 8);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (20, 'Nurse, learning disability', 20.35, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 6, 'Excepturi amet ullam hic odio blanditiis.', 4.58, 54, -16.489276, -35.13586, 5);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (21, 'Maintenance engineer', 28.47, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 20, 'Consequuntur maiores voluptatem nobis eum.', 4.99, 67, -36.782063, -134.176392, 36);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (22, 'Technical brewer', 45.13, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 1, 'Natus nemo laudantium suscipit.', 4.36, 14, -14.31966, 158.530921, 18);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (23, 'Production manager', 41.9, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 11, 'Magni suscipit nesciunt magni cumque sit.', 3.22, 55, 31.91723, 145.009996, 30);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (24, 'Midwife', 15.11, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 9, 'Aperiam occaecati ut tempora rerum quis.', 4.94, 97, 20.792685, -71.658045, 33);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (25, 'Investment analyst', 46.94, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 10, 'Ipsa esse qui aliquam eaque at.', 4.68, 64, 8.628698, -179.853861, 13);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (26, 'Financial adviser', 20.35, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 6, 'Atque harum dolores.', 4.08, 99, -38.355531, -25.240266, 1);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (27, 'Conservator, museum/gallery', 35.96, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 16, 'Nulla eos quisquam animi praesentium minima.', 3.04, 46, 14.39726, 55.694024, 16);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (28, 'Arboriculturist', 17.03, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 19, 'Sequi fuga saepe error magni soluta.', 4.89, 10, -6.302126, -20.822472, 5);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (29, 'Administrator, arts', 49.23, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Adipisci iste totam nam vero fugiat.', 4.53, 16, -51.533747, -9.652973, 36);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (30, 'Training and development officer', 20.78, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 17, 'Similique optio dignissimos exercitationem.', 4.74, 54, 72.212548, 106.568913, 35);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (31, 'Warehouse manager', 41.43, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 7, 'Harum ea sit nisi nostrum.', 4.43, 51, -59.455548, -149.473606, 29);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (32, 'Journalist, newspaper', 46.49, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 15, 'Nihil excepturi fugiat maxime illum voluptatum.', 3.24, 28, 2.781362, 47.858708, 22);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (33, 'Psychotherapist', 15.74, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Expedita voluptatem soluta dignissimos commodi esse corrupti.', 3.46, 28, -29.666114, 114.632447, 5);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (34, 'Soil scientist', 39.77, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 2, 'Nemo dolorem quos quis nihil.', 3.46, 4, 45.204864, 62.206441, 5);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (35, 'Risk manager', 33.0, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 9, 'Quasi voluptates ipsum perspiciatis pariatur fugit ut.', 4.34, 27, -49.56468, -108.313224, 9);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (36, 'Accountant, chartered certified', 40.32, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 19, 'Error perferendis odio nesciunt sit excepturi.', 4.15, 31, -85.603429, -91.856684, 27);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (37, 'Advertising copywriter', 21.66, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 4, 'Facilis ut necessitatibus tenetur ipsum maiores cumque.', 4.32, 45, -4.475458, 125.905569, 27);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (38, 'Forensic scientist', 31.35, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 2, 'Aspernatur explicabo mollitia sunt provident perferendis architecto aliquid.', 4.35, 82, -76.890918, -30.801236, 4);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (39, 'Print production planner', 29.09, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 11, 'Quo veniam molestiae possimus.', 4.6, 13, 23.357768, -110.003314, 13);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (40, 'Solicitor, Scotland', 21.66, '{"miércoles": [{"inicio": "08:00", "fin": "16:00"}]}', 15, 'Laborum sed occaecati aperiam corrupti eius et.', 3.28, 23, 35.343765, -2.024219, 30);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (41, 'Programmer, systems', 23.74, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 3, 'Ipsa quia explicabo tempora.', 3.89, 70, -46.0828, 56.180884, 4);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (42, 'Research scientist (life sciences)', 37.83, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Fugit eligendi doloremque molestias optio eos.', 4.67, 11, -89.001932, 90.347211, 11);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (43, 'Nurse, mental health', 29.22, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 16, 'Nam repellendus illo rerum.', 3.43, 51, 48.608313, -141.628572, 11);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (44, 'Administrator', 28.26, '{"jueves": [{"inicio": "08:00", "fin": "16:00"}]}', 13, 'Ducimus inventore corporis dolorem aliquam explicabo iusto sequi.', 3.53, 100, -13.473685, -116.680794, 19);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (45, 'Banker', 29.81, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 18, 'Voluptatum sed iure quasi aliquid adipisci hic.', 4.32, 62, 82.433887, 6.46479, 13);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (46, 'Structural engineer', 25.38, '{"lunes": [{"inicio": "08:00", "fin": "16:00"}]}', 2, 'Nisi recusandae ad quia ad.', 4.16, 69, -80.96069, -90.288619, 21);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (47, 'Academic librarian', 17.0, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 19, 'Modi doloremque ratione a fugit temporibus magni magni.', 3.95, 67, 62.700542, -15.673743, 4);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (48, 'Freight forwarder', 48.63, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 3, 'Temporibus beatae impedit animi asperiores.', 4.7, 8, 54.254988, 60.327983, 5);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (49, 'Surveyor, hydrographic', 38.63, '{"martes": [{"inicio": "08:00", "fin": "16:00"}]}', 8, 'Officia molestias vero dolorum.', 3.81, 72, 87.820641, 34.362834, 38);
+INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, latitude, longitude, servicio_id) VALUES (50, 'Secretary, company', 35.81, '{"viernes": [{"inicio": "08:00", "fin": "16:00"}]}', 20, 'Facere error suscipit quo cum.', 3.16, 84, 81.007129, 140.913333, 37);
 
--- 5. Insertar Usuarios Profesionales
-INSERT INTO usuarios (nombre, nombre_usuario, contraseña, email, valoracion) VALUES
-                                                                                 ('Juan Fernández', 'pro1', 'pass123', 'pro1@example.com', 4.8),
-                                                                                 ('Carmen López', 'pro2', 'pass123', 'pro2@example.com', 4.7),
-                                                                                 ('Luis Gómez', 'pro3', 'pass123', 'pro3@example.com', 4.6),
-                                                                                 ('Marta Sánchez', 'pro4', 'pass123', 'pro4@example.com', 4.9),
-                                                                                 ('Diego Navarro', 'pro5', 'pass123', 'pro5@example.com', 4.7),
-                                                                                 ('Paula Molina', 'pro6', 'pass123', 'pro6@example.com', 4.8),
-                                                                                 ('Francisco Díaz', 'pro7', 'pass123', 'pro7@example.com', 4.6),
-                                                                                 ('Andrea Castillo', 'pro8', 'pass123', 'pro8@example.com', 4.8),
-                                                                                 ('Hugo Romero', 'pro9', 'pass123', 'pro9@example.com', 4.7),
-                                                                                 ('Sara Vargas', 'pro10', 'pass123', 'pro10@example.com', 4.9);
-
--- 6. Insertar Profesionales
-INSERT INTO profesionales (id_usuario, especialidad, precio_hora, horario_disponible, experiencia, certificaciones, calificacion_promedio, total_contrataciones, ubicacion, servicio_id) VALUES
-                                                                                                                                                                                             (6, 'Fontanero', 25.00, '{"lunes":[{"inicio":"08:00","fin":"16:00"}]}', 5, 'Certificado de Fontanería', 4.8, 12, ST_GeomFromText('POINT(2.17 41.38)',4326), 1),
-                                                                                                                                                                                             (7, 'Electricista', 30.00, '{"martes":[{"inicio":"09:00","fin":"17:00"}]}', 7, 'Diploma Electricidad', 4.7, 10, ST_GeomFromText('POINT(2.18 41.39)',4326), 2),
-                                                                                                                                                                                             (8, 'Estilista', 28.00, '{"miércoles":[{"inicio":"10:00","fin":"18:00"}]}', 6, 'Certificado Estética', 4.6, 9, ST_GeomFromText('POINT(2.19 41.40)',4326), 3),
-                                                                                                                                                                                             (9, 'Técnico Informático', 35.00, '{"jueves":[{"inicio":"07:00","fin":"15:00"}]}', 8, 'Certificado Técnico', 4.9, 15, ST_GeomFromText('POINT(2.20 41.41)',4326), 5),
-                                                                                                                                                                                             (10, 'Profesor de Inglés', 22.00, '{"viernes":[{"inicio":"16:00","fin":"20:00"}]}', 4, 'Licenciado en Lenguas', 4.7, 11, ST_GeomFromText('POINT(2.21 41.42)',4326), 10);
-
--- 7. Insertar Profesional_Servicios (varios profesionales por servicio)
-INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES
-                                                                                              (6, 1, 25.00, 'Reparación de fugas de agua'),
-                                                                                              (6, 2, 30.00, 'Instalaciones eléctricas básicas'),
-                                                                                              (7, 2, 28.00, 'Instalaciones eléctricas avanzadas'),
-                                                                                              (8, 3, 30.00, 'Corte de cabello y estilismo'),
-                                                                                              (8, 4, 35.00, 'Tratamientos faciales de belleza'),
-                                                                                              (9, 5, 28.00, 'Reparación de computadoras'),
-                                                                                              (9, 6, 30.00, 'Arreglo de móviles Android e iPhone'),
-                                                                                              (10, 9, 22.00, 'Tutorías personalizadas de inglés'),
-                                                                                              (10, 10, 24.00, 'Preparación exámenes de inglés');
-
--- 8. Insertar Contrataciones (clientes contratando profesionales)
-INSERT INTO contrataciones (id_usuario, id_profesional_servicio, fecha_hora, estado, duracion_estimada, costo_total) VALUES
-                                                                                                                         (1, 1, '2025-06-01 10:00:00', 'confirmada', 120, 50.00),
-                                                                                                                         (2, 2, '2025-06-02 12:00:00', 'pendiente', 90, 45.00),
-                                                                                                                         (3, 3, '2025-06-03 09:30:00', 'confirmada', 60, 28.00),
-                                                                                                                         (4, 4, '2025-06-04 16:00:00', 'confirmada', 90, 70.00),
-                                                                                                                         (5, 5, '2025-06-05 11:00:00', 'confirmada', 120, 44.00);
-
--- 9. Insertar Valoraciones
-INSERT INTO valoraciones (id_usuario, id_usuario_profesional, puntuacion, comentario, id_contratacion) VALUES
-                                                                                                           (1, 6, 5, '¡Muy buen fontanero!', 1),
-                                                                                                           (2, 7, 4, 'Electricista puntual.', 2),
-                                                                                                           (3, 8, 5, 'Muy contenta con el corte.', 3),
-                                                                                                           (4, 9, 5, 'Reparación de PC perfecta.', 4),
-                                                                                                           (5, 10, 4, 'Gran profesor de inglés.', 5);
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (1, 9, 37.38, 'Descripción profesional del servicio 9');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (2, 2, 40.78, 'Descripción profesional del servicio 2');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (3, 13, 18.28, 'Descripción profesional del servicio 13');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (4, 18, 40.06, 'Descripción profesional del servicio 18');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (5, 22, 43.33, 'Descripción profesional del servicio 22');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (6, 6, 24.73, 'Descripción profesional del servicio 6');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (7, 3, 28.3, 'Descripción profesional del servicio 3');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (8, 36, 40.54, 'Descripción profesional del servicio 36');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (9, 13, 25.26, 'Descripción profesional del servicio 13');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (10, 6, 39.66, 'Descripción profesional del servicio 6');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (11, 11, 44.94, 'Descripción profesional del servicio 11');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (12, 39, 27.96, 'Descripción profesional del servicio 39');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (13, 25, 37.22, 'Descripción profesional del servicio 25');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (14, 15, 24.45, 'Descripción profesional del servicio 15');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (15, 37, 43.76, 'Descripción profesional del servicio 37');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (16, 42, 45.67, 'Descripción profesional del servicio 42');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (17, 35, 31.06, 'Descripción profesional del servicio 35');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (18, 24, 24.2, 'Descripción profesional del servicio 24');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (19, 8, 22.68, 'Descripción profesional del servicio 8');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (20, 5, 20.35, 'Descripción profesional del servicio 5');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (21, 36, 28.47, 'Descripción profesional del servicio 36');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (22, 18, 45.13, 'Descripción profesional del servicio 18');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (23, 30, 41.9, 'Descripción profesional del servicio 30');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (24, 33, 15.11, 'Descripción profesional del servicio 33');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (25, 13, 46.94, 'Descripción profesional del servicio 13');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (26, 1, 20.35, 'Descripción profesional del servicio 1');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (27, 16, 35.96, 'Descripción profesional del servicio 16');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (28, 5, 17.03, 'Descripción profesional del servicio 5');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (29, 36, 49.23, 'Descripción profesional del servicio 36');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (30, 35, 20.78, 'Descripción profesional del servicio 35');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (31, 29, 41.43, 'Descripción profesional del servicio 29');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (32, 22, 46.49, 'Descripción profesional del servicio 22');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (33, 5, 15.74, 'Descripción profesional del servicio 5');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (34, 5, 39.77, 'Descripción profesional del servicio 5');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (35, 9, 33.0, 'Descripción profesional del servicio 9');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (36, 27, 40.32, 'Descripción profesional del servicio 27');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (37, 27, 21.66, 'Descripción profesional del servicio 27');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (38, 4, 31.35, 'Descripción profesional del servicio 4');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (39, 13, 29.09, 'Descripción profesional del servicio 13');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (40, 30, 21.66, 'Descripción profesional del servicio 30');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (41, 4, 23.74, 'Descripción profesional del servicio 4');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (42, 11, 37.83, 'Descripción profesional del servicio 11');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (43, 11, 29.22, 'Descripción profesional del servicio 11');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (44, 19, 28.26, 'Descripción profesional del servicio 19');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (45, 13, 29.81, 'Descripción profesional del servicio 13');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (46, 21, 25.38, 'Descripción profesional del servicio 21');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (47, 4, 17.0, 'Descripción profesional del servicio 4');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (48, 5, 48.63, 'Descripción profesional del servicio 5');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (49, 38, 38.63, 'Descripción profesional del servicio 38');
+INSERT INTO profesional_servicios (id_usuario, id_servicio, precio, descripcion_servicio) VALUES (50, 37, 35.81, 'Descripción profesional del servicio 37');

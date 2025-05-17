@@ -3,11 +3,7 @@ package org.example.fixerappbackend.service.impl;
 import org.example.fixerappbackend.dto.ClienteRegisterRequest;
 import org.example.fixerappbackend.dto.LoginRequest;
 import org.example.fixerappbackend.dto.ProfesionalRegisterRequest;
-import org.example.fixerappbackend.model.Cliente;
-import org.example.fixerappbackend.model.PasswordResetToken;
-import org.example.fixerappbackend.model.Profesional;
-import org.example.fixerappbackend.model.Servicio;
-import org.example.fixerappbackend.model.Usuario;
+import org.example.fixerappbackend.model.*;
 import org.example.fixerappbackend.repo.PasswordResetTokenRepo;
 import org.example.fixerappbackend.repo.ServicioRepo;
 import org.example.fixerappbackend.repo.UsuarioRepo;
@@ -107,6 +103,8 @@ public class AuthServiceImpl implements AuthService {
         cliente.setValoracion(0.0f);
         cliente.setPreferencias(registerRequest.getPreferencias());
 
+        cliente.setTipoUsuario(TipoUsuario.valueOf("cliente"));
+
         usuarioRepository.save(cliente);
         LOGGER.info("Cliente registrado exitosamente: " + cliente.getEmail());
 
@@ -120,6 +118,7 @@ public class AuthServiceImpl implements AuthService {
                         "message", "Cliente registrado exitosamente"
                 ));
     }
+
 
     public ResponseEntity<?> registerProfesional(ProfesionalRegisterRequest registerRequest) {
         LOGGER.info("Intentando registrar profesional con email: " + registerRequest.getEmail());
@@ -145,8 +144,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if (registerRequest.getUbicacion() == null ||
-                !registerRequest.getUbicacion().containsKey("latitud") ||
-                !registerRequest.getUbicacion().containsKey("longitud")) {
+                registerRequest.getUbicacion().get("latitud") == null ||
+                registerRequest.getUbicacion().get("longitud") == null) {
             LOGGER.warning("El campo 'ubicacion' es obligatorio para profesionales");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "El campo 'ubicacion' es obligatorio y debe contener 'latitud' y 'longitud'"));
@@ -165,12 +164,9 @@ public class AuthServiceImpl implements AuthService {
         profesional.setCertificaciones(registerRequest.getCertificaciones());
         profesional.setCalificacionPromedio(0.0f);
         profesional.setTotalContrataciones(0);
-        profesional.setUbicacion(
-                registerRequest.getUbicacion().get("latitud"),
-                registerRequest.getUbicacion().get("longitud")
-        );
+        profesional.setLatitude(registerRequest.getLatitud());
+        profesional.setLongitude(registerRequest.getLongitud());
 
-        // 🚀 Asociar el Servicio al profesional
         Servicio servicio = servicioRepository.findById(registerRequest.getIdServicio())
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         profesional.setServicio(servicio);

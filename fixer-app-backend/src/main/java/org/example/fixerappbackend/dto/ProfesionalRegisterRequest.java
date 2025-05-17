@@ -1,22 +1,29 @@
 package org.example.fixerappbackend.dto;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ProfesionalRegisterRequest {
+
     private String nombre;
     private String usuario;
     private String email;
     private String contrasena;
+
     private String especialidad;
     private BigDecimal precioHora;
-    private Map<String, Double> ubicacion;
+
+    private BigDecimal latitud;
+    private BigDecimal longitud;
+
     private Map<String, Object> horarioDisponible;
     private Integer experiencia;
     private String certificaciones;
-    private Long idServicio; // 🚀 Nuevo campo agregado
+    private Long idServicio;
 
     // Getters y setters
+
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
@@ -35,8 +42,11 @@ public class ProfesionalRegisterRequest {
     public BigDecimal getPrecioHora() { return precioHora; }
     public void setPrecioHora(BigDecimal precioHora) { this.precioHora = precioHora; }
 
-    public Map<String, Double> getUbicacion() { return ubicacion; }
-    public void setUbicacion(Map<String, Double> ubicacion) { this.ubicacion = ubicacion; }
+    public BigDecimal getLatitud() { return latitud; }
+    public void setLatitud(BigDecimal latitud) { this.latitud = latitud; }
+
+    public BigDecimal getLongitud() { return longitud; }
+    public void setLongitud(BigDecimal longitud) { this.longitud = longitud; }
 
     public Map<String, Object> getHorarioDisponible() { return horarioDisponible; }
     public void setHorarioDisponible(Map<String, Object> horarioDisponible) { this.horarioDisponible = horarioDisponible; }
@@ -49,4 +59,12 @@ public class ProfesionalRegisterRequest {
 
     public Long getIdServicio() { return idServicio; }
     public void setIdServicio(Long idServicio) { this.idServicio = idServicio; }
+
+    public Map<String, BigDecimal> getUbicacion() {
+        if (latitud == null || longitud == null) return null;
+        Map<String, BigDecimal> ubicacion = new HashMap<>();
+        ubicacion.put("latitud", latitud);
+        ubicacion.put("longitud", longitud);
+        return ubicacion;
+    }
 }

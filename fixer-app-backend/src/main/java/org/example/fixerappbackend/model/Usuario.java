@@ -11,6 +11,10 @@ public abstract class Usuario {
     @Column(name = "id_usuario")
     private Long id;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario tipoUsuario;
+
     @Column(name = "nombre")
     private String nombre;
 
@@ -27,6 +31,21 @@ public abstract class Usuario {
     private Float valoracion;
 
     // Getters y setters
+    public Float getValoracion() {
+        return valoracion;
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -40,3 +59,4 @@ public abstract class Usuario {
     public void setEmail(String email) { this.email = email; }
     public void setValoracion(Float valoracion) { this.valoracion = valoracion; }
 }
+

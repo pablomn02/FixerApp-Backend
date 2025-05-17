@@ -40,40 +40,7 @@ public class ContratacionController {
 
     @PostMapping
     public ResponseEntity<?> crearContratacion(@RequestBody ContratacionCreateRequest request) {
-        try {
-            ProfesionalServicio profesionalServicio = profesionalServicioService.findById(request.getIdProfesionalServicio())
-                    .orElseThrow(() -> new RuntimeException("ProfesionalServicio no encontrado."));
-
-            Usuario usuario = usuarioRepo.findById(request.getIdUsuario())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
-
-            if (!(usuario instanceof Cliente)) {
-                throw new RuntimeException("El usuario no es un cliente válido.");
-            }
-
-            Cliente cliente = (Cliente) usuario;
-
-            Contratacion nueva = new Contratacion();
-            nueva.setCliente(cliente); // ✅ Correcto
-            nueva.setProfesionalServicio(profesionalServicio);
-            nueva.setFechaHora(request.getFechaHora());
-            nueva.setDuracionEstimada(request.getDuracionEstimada());
-            nueva.setCostoTotal(request.getCostoTotal());
-            nueva.setEstado("pendiente");
-
-            contratacionService.validarDisponibilidad(profesionalServicio.getProfesional(), request.getFechaHora());
-
-            Contratacion guardada = contratacionService.save(nueva);
-            return ResponseEntity.ok(guardada);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(
-                    java.util.Map.of(
-                            "error", "Internal Server Error",
-                            "message", e.getMessage()
-                    )
-            );
-        }
+        return contratacionService.crearContratacion(request);
     }
 
 

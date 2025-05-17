@@ -1,13 +1,12 @@
 package org.example.fixerappbackend.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ContratacionCreateRequest {
     private Long idUsuario;
     private Long idProfesionalServicio;
-    private LocalDate fechaHora;
+    private LocalDateTime fechaHora;
     private Integer duracionEstimada;
     private BigDecimal costoTotal;
 
@@ -28,10 +27,10 @@ public class ContratacionCreateRequest {
     }
 
     public LocalDateTime getFechaHora() {
-        return fechaHora.atStartOfDay();
+        return fechaHora;
     }
 
-    public void setFechaHora(LocalDate fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -50,7 +49,4 @@ public class ContratacionCreateRequest {
     public void setCostoTotal(BigDecimal costoTotal) {
         this.costoTotal = costoTotal;
     }
-
-    // Getters y setters
 }
-
