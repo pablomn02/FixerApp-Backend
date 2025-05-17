@@ -30,7 +30,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @CrossOrigin("*")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Integer id) {
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
         Optional<Usuario> usuario = usuarioService.findById(id);
         return usuario.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

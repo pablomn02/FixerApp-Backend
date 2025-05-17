@@ -51,6 +51,11 @@ public class Profesional extends Usuario {
     @JsonIgnore
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "servicio_id")
+    private Servicio servicio;
+
+
     // Método para inicializar el horario con todos los días vacíos
     public void inicializarHorario() {
         this.horarioDisponible = new LinkedHashMap<>();
@@ -168,4 +173,12 @@ public class Profesional extends Usuario {
     public void setProfesionalServicios(Set<ProfesionalServicio> profesionalServicios) { this.profesionalServicios = profesionalServicios; }
     public Set<Valoracion> getValoraciones() { return valoraciones; }
     public void setValoraciones(Set<Valoracion> valoraciones) { this.valoraciones = valoraciones; }
+    public Servicio getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
 }

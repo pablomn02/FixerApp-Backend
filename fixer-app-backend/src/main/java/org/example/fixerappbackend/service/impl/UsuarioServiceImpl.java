@@ -20,7 +20,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Optional<Usuario> findById(Integer id) {
+    public Optional<Usuario> findById(Long id) {
         return usuarioRepo.findById(id);
     }
 

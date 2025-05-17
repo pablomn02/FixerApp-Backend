@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UsuarioService {
     List<Usuario> findAll();
 
-    Optional<Usuario> findById(Integer id);
+    Optional<Usuario> findById(Long id);
 
     boolean existsByNombreUsuario(String nombreUsuario);
 

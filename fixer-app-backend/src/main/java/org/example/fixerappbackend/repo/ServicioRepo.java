@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ServicioRepo extends JpaRepository<Servicio, Integer> {
+public interface ServicioRepo extends JpaRepository<Servicio, Long> {
 
     @Query("SELECT s FROM Servicio s WHERE s.idCategoria.id = :idCategoria")
     List<Servicio> findServiciosByCategoriaId(Integer idCategoria);
