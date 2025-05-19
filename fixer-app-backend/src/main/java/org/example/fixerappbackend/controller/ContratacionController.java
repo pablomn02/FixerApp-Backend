@@ -1,10 +1,9 @@
 package org.example.fixerappbackend.controller;
 
 import org.example.fixerappbackend.dto.ContratacionCreateRequest;
-import org.example.fixerappbackend.model.Cliente;
+import org.example.fixerappbackend.dto.ContratacionDTO;
 import org.example.fixerappbackend.model.Contratacion;
-import org.example.fixerappbackend.model.ProfesionalServicio;
-import org.example.fixerappbackend.model.Usuario;
+import org.example.fixerappbackend.model.EstadoContratacion;
 import org.example.fixerappbackend.repo.UsuarioRepo;
 import org.example.fixerappbackend.service.ClienteService;
 import org.example.fixerappbackend.service.ContratacionService;
@@ -48,5 +47,27 @@ public class ContratacionController {
             @PathVariable Long idProfesionalServicio,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String fecha) {
         return contratacionService.getHorasOcupadas(idProfesionalServicio, fecha);
+    }
+
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<ContratacionDTO>> getContratacionesActivas(@PathVariable Long id) {
+        List<EstadoContratacion> estados = List.of(EstadoContratacion.PENDIENTE, EstadoContratacion.ACEPTADA);
+        List<Contratacion> contrataciones = contratacionService.findByClienteIdAndEstadoIn(id, estados);
+        List<ContratacionDTO> resultado = contrataciones.stream()
+                .map(ContratacionDTO::fromEntity)
+                .toList();
+        return ResponseEntity.ok(resultado);
+    }
+
+    @PutMapping("/{id}/modificarEstadoContratacion")
+    public ResponseEntity<?> modificarEstadoContratacion(
+            @PathVariable Long id,
+            @RequestParam EstadoContratacion nuevoEstado) {
+        try {
+            contratacionService.actualizarEstado(id, nuevoEstado);
+            return ResponseEntity.ok().body("Estado actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al actualizar estado: " + e.getMessage());
+        }
     }
 }

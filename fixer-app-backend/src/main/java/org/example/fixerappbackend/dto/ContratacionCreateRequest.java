@@ -1,12 +1,16 @@
 package org.example.fixerappbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ContratacionCreateRequest {
     private Long idUsuario;
     private Long idProfesionalServicio;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaHora;
+
     private Integer duracionEstimada;
     private BigDecimal costoTotal;
 

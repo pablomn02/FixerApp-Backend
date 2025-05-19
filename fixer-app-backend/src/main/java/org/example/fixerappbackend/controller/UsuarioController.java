@@ -19,9 +19,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
     @GetMapping
     @CrossOrigin("*")
     public List<Usuario> getAllUsuarios() {

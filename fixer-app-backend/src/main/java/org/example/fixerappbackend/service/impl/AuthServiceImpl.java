@@ -5,6 +5,7 @@ import org.example.fixerappbackend.dto.LoginRequest;
 import org.example.fixerappbackend.dto.ProfesionalRegisterRequest;
 import org.example.fixerappbackend.model.*;
 import org.example.fixerappbackend.repo.PasswordResetTokenRepo;
+import org.example.fixerappbackend.repo.ProfesionalServicioRepo;
 import org.example.fixerappbackend.repo.ServicioRepo;
 import org.example.fixerappbackend.repo.UsuarioRepo;
 import org.example.fixerappbackend.service.AuthService;
@@ -49,6 +50,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private ServicioRepo servicioRepository;
 
+    @Autowired
+    private ProfesionalServicioRepo profesionalServicioRepo;
+
     @Value("${app.frontend.url}")
     private String frontendUrl;
 
@@ -64,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         LOGGER.info("Verificando contraseña para " + loginRequest.getEmail());
-        if (!passwordEncoder.matches(loginRequest.getContrasena(), usuario.getcontrasena())) {
+        if (!passwordEncoder.matches(loginRequest.getContrasena(), usuario.getContrasena())) {
             LOGGER.warning("Contraseña incorrecta para " + loginRequest.getEmail());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Contraseña incorrecta"));
@@ -171,7 +175,18 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         profesional.setServicio(servicio);
 
+        profesional.setTipoUsuario(TipoUsuario.profesional);
         usuarioRepository.save(profesional);
+
+        ProfesionalServicio relacion = new ProfesionalServicio();
+        relacion.setProfesional(profesional);
+        relacion.setServicio(servicio);
+        relacion.setDescripcionServicio(registerRequest.getEspecialidad());
+        relacion.setPrecio(registerRequest.getPrecioHora());
+
+        profesionalServicioRepo.save(relacion);
+
+
         LOGGER.info("Profesional registrado exitosamente: " + profesional.getEmail());
 
         String token = jwtUtil.create(String.valueOf(profesional.getId()), profesional.getEmail());
@@ -183,6 +198,7 @@ public class AuthServiceImpl implements AuthService {
                         "idUsuario", profesional.getId(),
                         "message", "Profesional registrado exitosamente"
                 ));
+
     }
 
     @Override

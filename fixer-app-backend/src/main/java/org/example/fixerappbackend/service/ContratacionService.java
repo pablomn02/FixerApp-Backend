@@ -1,7 +1,9 @@
 package org.example.fixerappbackend.service;
 
 import org.example.fixerappbackend.dto.ContratacionCreateRequest;
+import org.example.fixerappbackend.dto.ContratacionDTO;
 import org.example.fixerappbackend.model.Contratacion;
+import org.example.fixerappbackend.model.EstadoContratacion;
 import org.example.fixerappbackend.model.ProfesionalServicio;
 import org.springframework.http.ResponseEntity;
 
@@ -19,4 +21,10 @@ public interface ContratacionService {
     void validarDisponibilidad(ProfesionalServicio profesionalServicio, LocalDateTime fechaHoraUTC, int duracion);
 
     ResponseEntity<?> crearContratacion(ContratacionCreateRequest request);
+
+    List<Contratacion> findByClienteIdAndEstadoIn(Long idCliente, List<EstadoContratacion> estados);
+
+    List<Contratacion> findByProfesionalId(Long id);
+
+    void actualizarEstado(Long id, EstadoContratacion estadoContratacion);
 }

@@ -1,9 +1,7 @@
--- 1. Eliminar y recrear la base de datos
 DROP DATABASE IF EXISTS fixer_app;
 CREATE DATABASE fixer_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE fixer_app;
 
--- 2. Tablas principales
 
 CREATE TABLE categorias (
                             id_categoria BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -87,7 +85,7 @@ CREATE TABLE contrataciones (
                                 id_usuario BIGINT NULL,
                                 id_profesional_servicio BIGINT NULL,
                                 fecha_hora DATETIME,
-                                estado VARCHAR(20) DEFAULT 'pendiente',
+                                estado ENUM('PENDIENTE', 'ACEPTADA', 'RECHAZADA', 'EN_CURSO', 'COMPLETADA') NOT NULL DEFAULT 'PENDIENTE',
                                 duracion_estimada BIGINT,
                                 costo_total DECIMAL(10,2),
                                 FOREIGN KEY (id_usuario) REFERENCES clientes(id_usuario) ON DELETE SET NULL,
@@ -112,7 +110,6 @@ CREATE INDEX idx_valoraciones_id_usuario ON valoraciones (id_usuario);
 CREATE INDEX idx_valoraciones_id_usuario_profesional ON valoraciones (id_usuario_profesional);
 CREATE INDEX idx_valoraciones_id_contratacion ON valoraciones (id_contratacion);
 
--- ✅ NUEVA TABLA: Bloques de tiempo ocupados
 
 CREATE TABLE horas_ocupadas (
                                 id_hora_ocupada BIGINT PRIMARY KEY AUTO_INCREMENT,

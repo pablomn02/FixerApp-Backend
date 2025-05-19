@@ -1,5 +1,6 @@
 package org.example.fixerappbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -28,13 +29,17 @@ public class Contratacion {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "id_profesional_servicio")
+    @JsonIgnore
     private ProfesionalServicio profesionalServicio;
 
     @Column(name = "fecha_hora")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaHora;
 
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", length = 20)
-    private String estado;
+    private EstadoContratacion estadoContratacion;
 
     @Column(name = "duracion_estimada")
     private Integer duracionEstimada;
@@ -44,8 +49,6 @@ public class Contratacion {
 
     @OneToMany(mappedBy = "contratacion")
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
-
-    // Getters y setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -59,8 +62,13 @@ public class Contratacion {
     public LocalDateTime getFechaHora() { return fechaHora; }
     public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public EstadoContratacion getEstadoContratacion() {
+        return estadoContratacion;
+    }
+
+    public void setEstadoContratacion(EstadoContratacion estadoContratacion) {
+        this.estadoContratacion = estadoContratacion;
+    }
 
     public Integer getDuracionEstimada() { return duracionEstimada; }
     public void setDuracionEstimada(Integer duracionEstimada) { this.duracionEstimada = duracionEstimada; }

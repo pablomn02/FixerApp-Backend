@@ -52,7 +52,6 @@ public class ContratacionServiceImpl implements ContratacionService {
             throw new RuntimeException("El profesional no tiene un horario de disponibilidad configurado.");
         }
 
-        // Convertimos de UTC a horario de Madrid para verificar la lógica local
         ZonedDateTime fechaHoraMadrid = fechaHoraUTC.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Europe/Madrid"));
         LocalDateTime fechaHoraLocal = fechaHoraMadrid.toLocalDateTime();
         LocalDate fechaLocal = fechaHoraLocal.toLocalDate();
@@ -68,9 +67,16 @@ public class ContratacionServiceImpl implements ContratacionService {
 
         boolean enRango = lista.stream().anyMatch(r -> {
             if (r instanceof Map<?, ?> rango) {
-                LocalTime inicio = LocalTime.parse((String) rango.get("inicio"));
-                LocalTime fin = LocalTime.parse((String) rango.get("fin"));
-                return !horaInicio.isBefore(inicio) && !horaFin.isAfter(fin);
+                try {
+                    LocalDateTime inicioDT = LocalDateTime.parse((String) rango.get("inicio"));
+                    LocalDateTime finDT = LocalDateTime.parse((String) rango.get("fin"));
+                    LocalTime inicio = inicioDT.toLocalTime();
+                    LocalTime fin = finDT.toLocalTime();
+                    return !horaInicio.isBefore(inicio) && !horaFin.isAfter(fin);
+                } catch (Exception e) {
+                    System.err.println("Error parseando horario: " + rango);
+                    return false;
+                }
             }
             return false;
         });
@@ -79,7 +85,6 @@ public class ContratacionServiceImpl implements ContratacionService {
             throw new RuntimeException("El profesional no está disponible en el horario solicitado.");
         }
 
-        // Verificar solapamiento en hora local
         boolean solapada = horaOcupadaRepo.existsSolapamiento(
                 profesionalServicio, fechaLocal, horaInicio, horaFin
         );
@@ -115,10 +120,6 @@ public class ContratacionServiceImpl implements ContratacionService {
                 ));
             }
 
-            System.out.println("ID Usuario: " + request.getIdUsuario());
-            System.out.println("ID ProfesionalServicio: " + request.getIdProfesionalServicio());
-            System.out.println("Fecha y hora (UTC): " + request.getFechaHora());
-
             ProfesionalServicio profesionalServicio = profesionalServicioService
                     .findById(request.getIdProfesionalServicio())
                     .orElseThrow(() -> new RuntimeException("ProfesionalServicio no encontrado."));
@@ -135,11 +136,10 @@ public class ContratacionServiceImpl implements ContratacionService {
             nueva.setFechaHora(request.getFechaHora());
             nueva.setDuracionEstimada(request.getDuracionEstimada());
             nueva.setCostoTotal(request.getCostoTotal());
-            nueva.setEstado("pendiente");
+            nueva.setEstadoContratacion(EstadoContratacion.PENDIENTE);
 
             Contratacion guardada = this.save(nueva);
 
-            // Guardar hora ocupada en horario local Madrid
             ZonedDateTime zonedMadrid = request.getFechaHora().atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Europe/Madrid"));
             HoraOcupada bloqueada = new HoraOcupada();
             bloqueada.setProfesionalServicio(profesionalServicio);
@@ -158,6 +158,35 @@ public class ContratacionServiceImpl implements ContratacionService {
                     "error", "Internal Server Error",
                     "message", e.getMessage()
             ));
+        }
+    }
+
+    @Override
+    public List<Contratacion> findByClienteIdAndEstadoIn(Long idCliente, List<EstadoContratacion> estados) {
+        return contratacionRepo.findByClienteIdAndEstadoContratacionIn(idCliente, estados);
+    }
+
+    @Override
+    public List<Contratacion> findByProfesionalId(Long id) {
+        return contratacionRepo.findByProfesionalServicio_Profesional_Id(id);
+    }
+
+    @Override
+    public void actualizarEstado(Long id, EstadoContratacion estadoContratacion) {
+        Contratacion contratacion = contratacionRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contratación no encontrada con ID: " + id));
+
+        contratacion.setEstadoContratacion(estadoContratacion);
+        contratacionRepo.save(contratacion);
+    }
+
+    // Método auxiliar si necesitas actualizar por string (opcional)
+    public void actualizarEstado(Long id, String nuevoEstado) {
+        try {
+            EstadoContratacion estado = EstadoContratacion.valueOf(nuevoEstado.toUpperCase());
+            actualizarEstado(id, estado);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado inválido: " + nuevoEstado);
         }
     }
 }

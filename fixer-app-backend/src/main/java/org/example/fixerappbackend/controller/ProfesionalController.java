@@ -1,8 +1,11 @@
 package org.example.fixerappbackend.controller;
 
+import org.example.fixerappbackend.dto.ContratacionDTO;
 import org.example.fixerappbackend.dto.ProfesionalServicioDTO;
+import org.example.fixerappbackend.model.Contratacion;
 import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.ProfesionalServicio;
+import org.example.fixerappbackend.service.ContratacionService;
 import org.example.fixerappbackend.service.ProfesionalService;
 import org.example.fixerappbackend.service.ProfesionalServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class ProfesionalController {
     @Autowired
     private ProfesionalServicioService profesionalServicioService;
 
+    @Autowired
+    private ContratacionService contratacionService;
+
     @GetMapping()
     public List<ProfesionalServicioDTO> getAllProfesionales() {
         List<Profesional> profesionales = profesionalService.findAll();
@@ -44,6 +50,14 @@ public class ProfesionalController {
                 .map(ps -> new ProfesionalServicioDTO(ps.getProfesional(), ps))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/{id}/contrataciones")
+    public List<ContratacionDTO> getContratacionesByProfesional(@PathVariable Long id) {
+        return contratacionService.findByProfesionalId(id).stream()
+                .map(ContratacionDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 
 
 }
