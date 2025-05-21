@@ -10,9 +10,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Repository
 public interface HoraOcupadaRepo extends JpaRepository<HoraOcupada, Long> {
+
+    List<HoraOcupada> findByProfesionalServicioIdAndFecha(Long idProfesionalServicio, LocalDate fecha);
+
     @Query("SELECT COUNT(h) > 0 FROM HoraOcupada h " +
             "WHERE h.profesionalServicio = :profesionalServicio " +
             "AND h.fecha = :fecha " +

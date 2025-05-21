@@ -7,7 +7,9 @@ import org.example.fixerappbackend.model.EstadoContratacion;
 import org.example.fixerappbackend.model.ProfesionalServicio;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface ContratacionService {
@@ -27,4 +29,6 @@ public interface ContratacionService {
     List<Contratacion> findByProfesionalId(Long id);
 
     void actualizarEstado(Long id, EstadoContratacion estadoContratacion);
+
+    List<LocalTime> getBloquesDisponibles(Long idProfesionalServicio, LocalDate localDate);
 }
