@@ -5,17 +5,19 @@ import org.example.fixerappbackend.dto.ProfesionalServicioDTO;
 import org.example.fixerappbackend.model.Contratacion;
 import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.ProfesionalServicio;
+import org.example.fixerappbackend.repo.ProfesionalRepo;
+import org.example.fixerappbackend.repo.ProfesionalServicioRepo;
 import org.example.fixerappbackend.service.ContratacionService;
 import org.example.fixerappbackend.service.ProfesionalService;
 import org.example.fixerappbackend.service.ProfesionalServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,6 +31,9 @@ public class ProfesionalController {
 
     @Autowired
     private ContratacionService contratacionService;
+
+    @Autowired
+    private ProfesionalServicioRepo profesionalServicioRepository;
 
     @GetMapping()
     public List<ProfesionalServicioDTO> getAllProfesionales() {
@@ -58,6 +63,49 @@ public class ProfesionalController {
                 .collect(Collectors.toList());
     }
 
+    private double distanciaEnKm(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radio de la Tierra en km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    @GetMapping("/servicio-cercanos")
+    public ResponseEntity<List<ProfesionalServicioDTO>> getProfesionalesByServicioCercanos(
+            @RequestParam Long servicioId,
+            @RequestParam double lat,
+            @RequestParam double lon,
+            @RequestParam(defaultValue = "100") double radioKm) {
+
+        List<ProfesionalServicio> profesionalServicios = profesionalServicioService.findByServicioId(servicioId);
+
+        List<ProfesionalServicioDTO> filtrados = profesionalServicios.stream()
+                .filter(ps -> {
+                    Profesional p = ps.getProfesional();
+                    return distanciaEnKm(
+                            lat,
+                            lon,
+                            p.getLatitude().doubleValue(),
+                            p.getLongitude().doubleValue()
+                    ) <= radioKm;
+                })
+
+                .map(ps -> new ProfesionalServicioDTO(ps.getProfesional(), ps))
+                .toList();
+
+        return ResponseEntity.ok(filtrados);
+    }
+
+    @GetMapping("/id")
+    public ResponseEntity<Long> getIdProfesionalServicio(@RequestParam Long usuarioId, @RequestParam Long servicioId) {
+        Optional<ProfesionalServicio> ps = profesionalServicioRepository.findByProfesional_IdAndServicio_Id(usuarioId, servicioId);
+        return ps.map(profServ -> ResponseEntity.ok(profServ.getId()))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 
 }

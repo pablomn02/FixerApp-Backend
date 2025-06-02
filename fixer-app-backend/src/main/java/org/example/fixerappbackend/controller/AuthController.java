@@ -19,25 +19,21 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
 
     @PostMapping("/register/cliente")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> registerCliente(@RequestBody ClienteRegisterRequest registerRequest) {
         return authService.registerCliente(registerRequest);
     }
 
     @PostMapping("/register/profesional")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<?> registerProfesional(@RequestBody ProfesionalRegisterRequest registerRequest) {
         return authService.registerProfesional(registerRequest);
     }
 
     @PostMapping("/request-password-reset")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Map<String, String>> requestPasswordReset(@RequestBody Map<String, String> request) {
         Map<String, String> response = new HashMap<>();
         try {
@@ -52,7 +48,6 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
         Map<String, String> response = new HashMap<>();
         try {

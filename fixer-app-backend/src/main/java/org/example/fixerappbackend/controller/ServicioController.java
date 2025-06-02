@@ -19,19 +19,16 @@ public class ServicioController {
     private ServicioService servicioService;
 
     @GetMapping
-    @CrossOrigin("*")
     public List<Servicio> getAllServicios() {
         return servicioService.findAll();
     }
 
     @GetMapping("/{idCategoria}")
-    @CrossOrigin("*")
     public List<Servicio> getServiciosByCategoriaId(@PathVariable Integer idCategoria) {
         return servicioService.findServiciosByCategoriaId(idCategoria);
     }
 
     @GetMapping("/{servicioId}/profesionales")
-    @CrossOrigin("*")
     public List<Profesional> obtenerProfesionalesPorServicio(@PathVariable Long servicioId) {
         return servicioService.obtenerProfesionalesPorServicio(servicioId);
     }

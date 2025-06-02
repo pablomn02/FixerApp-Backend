@@ -112,5 +112,6 @@ public class ContratacionDTO {
     public void setCostoTotal(BigDecimal costoTotal) {
         this.costoTotal = costoTotal;
     }
+
 }
 

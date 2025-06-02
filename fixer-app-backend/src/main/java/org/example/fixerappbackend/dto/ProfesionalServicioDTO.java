@@ -17,7 +17,10 @@ public class ProfesionalServicioDTO {
     private Long idServicio;
     private String nombreServicio;
     private Long idProfesionalServicio;
-    private Map<String, List<Map<String, String>>> horarioDisponible; // 🔥 AQUÍ
+    private Map<String, List<Map<String, String>>> horarioDisponible;
+
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 
     public ProfesionalServicioDTO() {}
 
@@ -29,6 +32,8 @@ public class ProfesionalServicioDTO {
         this.idServicio = profesionalServicio.getServicio().getId();
         this.nombreServicio = profesionalServicio.getServicio().getNombre();
         this.idProfesionalServicio = profesionalServicio.getId();
+        this.latitude = profesional.getLatitude();
+        this.longitude = profesional.getLongitude();
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -109,5 +114,21 @@ public class ProfesionalServicioDTO {
 
     public void setHorarioDisponible(Map<String, List<Map<String, String>>> horarioDisponible) {
         this.horarioDisponible = horarioDisponible;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
     }
 }

@@ -2,6 +2,7 @@
 package org.example.fixerappbackend.service.impl;
 
 import org.example.fixerappbackend.dto.ContratacionCreateRequest;
+import org.example.fixerappbackend.dto.ContratacionDTO;
 import org.example.fixerappbackend.model.*;
 import org.example.fixerappbackend.repo.ContratacionRepo;
 import org.example.fixerappbackend.repo.HoraOcupadaRepo;
@@ -138,6 +139,12 @@ public class ContratacionServiceImpl implements ContratacionService {
 
         return disponibles;
     }
+
+    @Override
+    public List<Contratacion> findByClienteId(Long idCliente) {
+        return contratacionRepo.findByClienteId(idCliente);
+    }
+
 
     @Override
     public List<Contratacion> findByClienteIdAndEstadoIn(Long idCliente, List<EstadoContratacion> estados) {

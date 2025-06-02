@@ -16,13 +16,11 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping()
-    @CrossOrigin("*")
     public List<Categoria> listarCategorias() {
         return categoriaService.findAll();
     }
 
     @GetMapping("{id}")
-    @CrossOrigin("*")
     public Optional<Categoria> getCategoriaById(@PathVariable Integer id) {
         return categoriaService.findById(id);
     }

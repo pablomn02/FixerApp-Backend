@@ -57,7 +57,19 @@ public class Profesional extends Usuario {
     @JsonIgnore
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
+    @ManyToMany(mappedBy = "favoritos")
+    @JsonIgnore
+    private Set<Cliente> seguidores = new LinkedHashSet<>();
+
     // Getters y Setters
+
+    public Set<Cliente> getSeguidores() {
+        return seguidores;
+    }
+
+    public void setSeguidores(Set<Cliente> seguidores) {
+        this.seguidores = seguidores;
+    }
 
     public String getEspecialidad() { return especialidad; }
     public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }

@@ -1,0 +1,55 @@
+services:
+
+  # Frontend (Ionic/Angular)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: fixer-app-frontend
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - fixer-app-network
+
+  mysql:
+    image: mysql:8
+    container_name: fixer-app-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fixer-app_db
+      MYSQL_USER: fixer-app
+      MYSQL_PASSWORD: Naranco.24
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d/
+      - mysql_data:/var/lib/mysql
+    networks:
+      - fixer-app-network
+
+  # Backend (Spring Boot)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fixer-app-backend
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fixer_app?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: fixer-app
+      SPRING_DATASOURCE_PASSWORD: Naranco.24
+    ports:
+      - "8000:8080"
+    networks:
+      - fixer-app-network
+    volumes:
+      - ./images:/app/images # Montar imágenes dentro del contenedor
+
+volumes:
+  mysql_data:
+networks:
+  fixer-app-network:

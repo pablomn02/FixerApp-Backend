@@ -25,12 +25,37 @@ public class Cliente extends Usuario {
     @JsonIgnore
     private Set<Valoracion> valoraciones = new LinkedHashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "clientes_favoritos",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "profesional_id")
+    )
+    private Set<Profesional> favoritos = new LinkedHashSet<>();
+
 
     // Getters y setters
+
+    public Set<Profesional> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(Set<Profesional> favoritos) {
+        this.favoritos = favoritos;
+    }
+
     public Map<String, Object> getPreferencias() { return preferencias; }
     public void setPreferencias(Map<String, Object> preferencias) { this.preferencias = preferencias; }
     public Set<Contratacion> getContrataciones() { return contrataciones; }
     public void setContrataciones(Set<Contratacion> contrataciones) { this.contrataciones = contrataciones; }
     public Set<Valoracion> getValoraciones() { return valoraciones; }
     public void setValoraciones(Set<Valoracion> valoraciones) { this.valoraciones = valoraciones; }
+
+    public void addFavorito(Profesional p) {
+        this.favoritos.add(p);
+    }
+
+    public void removeFavorito(Profesional p) {
+        this.favoritos.remove(p);
+    }
 }
