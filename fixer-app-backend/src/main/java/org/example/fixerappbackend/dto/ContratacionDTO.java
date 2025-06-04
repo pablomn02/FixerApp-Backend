@@ -8,23 +8,29 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ContratacionDTO {
+
     private Long idContratacion;
     private Long idUsuario;
     private String nombreCliente;
     private Long idProfesionalServicio;
     private String nombreProfesional;
+    private Long idProfesional;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaHora;
+
     private EstadoContratacion estadoContratacion;
     private Integer duracionEstimada;
     private BigDecimal costoTotal;
 
-    public Long getIdContratacion() {
-        return idContratacion;
+    private boolean yaValorada;
+
+    public boolean isYaValorada() {
+        return yaValorada;
     }
 
-    public void setIdContratacion(Long idContratacion) {
-        this.idContratacion = idContratacion;
+    public void setYaValorada(boolean yaValorada) {
+        this.yaValorada = yaValorada;
     }
 
     public static ContratacionDTO fromEntity(Contratacion c) {
@@ -39,6 +45,7 @@ public class ContratacionDTO {
         if (c.getProfesionalServicio() != null && c.getProfesionalServicio().getProfesional() != null) {
             dto.setIdProfesionalServicio(c.getProfesionalServicio().getId());
             dto.setNombreProfesional(c.getProfesionalServicio().getProfesional().getNombre());
+            dto.setIdProfesional(c.getProfesionalServicio().getProfesional().getId());
         }
 
         dto.setFechaHora(c.getFechaHora());
@@ -46,7 +53,20 @@ public class ContratacionDTO {
         dto.setDuracionEstimada(c.getDuracionEstimada());
         dto.setCostoTotal(c.getCostoTotal());
 
+        dto.setYaValorada(c.getValoraciones() != null && !c.getValoraciones().isEmpty());
+
         return dto;
+    }
+
+
+    // Getters y setters
+
+    public Long getIdContratacion() {
+        return idContratacion;
+    }
+
+    public void setIdContratacion(Long idContratacion) {
+        this.idContratacion = idContratacion;
     }
 
     public Long getIdUsuario() {
@@ -81,6 +101,14 @@ public class ContratacionDTO {
         this.nombreProfesional = nombreProfesional;
     }
 
+    public Long getIdProfesional() {
+        return idProfesional;
+    }
+
+    public void setIdProfesional(Long idProfesional) {
+        this.idProfesional = idProfesional;
+    }
+
     public LocalDateTime getFechaHora() {
         return fechaHora;
     }
@@ -112,6 +140,4 @@ public class ContratacionDTO {
     public void setCostoTotal(BigDecimal costoTotal) {
         this.costoTotal = costoTotal;
     }
-
 }
-

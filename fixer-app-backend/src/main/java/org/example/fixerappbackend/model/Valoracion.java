@@ -12,7 +12,7 @@ public class Valoracion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_valoracion", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
@@ -39,14 +39,14 @@ public class Valoracion {
     private Contratacion contratacion;
 
     // Getters y setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
     public Profesional getProfesional() { return profesional; }
     public void setProfesional(Profesional profesional) { this.profesional = profesional; }
     public Integer getPuntuacion() { return puntuacion; }
-    public void setPuntuacion(Integer puntuacion) { this.puntuacion = puntuacion; }
+    public void setPuntuacion(Long puntuacion) { this.puntuacion = Math.toIntExact(puntuacion); }
     public String getComentario() { return comentario; }
     public void setComentario(String comentario) { this.comentario = comentario; }
     public Instant getFechaTimestamp() { return fechaTimestamp; }

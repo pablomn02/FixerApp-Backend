@@ -1,7 +1,7 @@
 package org.example.fixerappbackend.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.ProfesionalServicio;
 
@@ -18,9 +18,10 @@ public class ProfesionalServicioDTO {
     private String nombreServicio;
     private Long idProfesionalServicio;
     private Map<String, List<Map<String, String>>> horarioDisponible;
-
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private Map<String, BigDecimal> ubicacion;
+    private Double valoracionMedia;
 
     public ProfesionalServicioDTO() {}
 
@@ -34,6 +35,10 @@ public class ProfesionalServicioDTO {
         this.idProfesionalServicio = profesionalServicio.getId();
         this.latitude = profesional.getLatitude();
         this.longitude = profesional.getLongitude();
+        this.ubicacion = Map.of(
+                "latitud", profesional.getLatitude(),
+                "longitud", profesional.getLongitude()
+        );
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -52,83 +57,40 @@ public class ProfesionalServicioDTO {
         }
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
+    // Getters y setters
+    public Long getIdUsuario() { return idUsuario; }
+    public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getEspecialidad() { return especialidad; }
+    public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public BigDecimal getPrecioHora() { return precioHora; }
+    public void setPrecioHora(BigDecimal precioHora) { this.precioHora = precioHora; }
 
-    public String getEspecialidad() {
-        return especialidad;
-    }
+    public Long getIdServicio() { return idServicio; }
+    public void setIdServicio(Long idServicio) { this.idServicio = idServicio; }
 
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
-    }
+    public String getNombreServicio() { return nombreServicio; }
+    public void setNombreServicio(String nombreServicio) { this.nombreServicio = nombreServicio; }
 
-    public BigDecimal getPrecioHora() {
-        return precioHora;
-    }
+    public Long getIdProfesionalServicio() { return idProfesionalServicio; }
+    public void setIdProfesionalServicio(Long idProfesionalServicio) { this.idProfesionalServicio = idProfesionalServicio; }
 
-    public void setPrecioHora(BigDecimal precioHora) {
-        this.precioHora = precioHora;
-    }
+    public Map<String, List<Map<String, String>>> getHorarioDisponible() { return horarioDisponible; }
+    public void setHorarioDisponible(Map<String, List<Map<String, String>>> horarioDisponible) { this.horarioDisponible = horarioDisponible; }
 
-    public Long getIdServicio() {
-        return idServicio;
-    }
+    public BigDecimal getLatitude() { return latitude; }
+    public void setLatitude(BigDecimal latitude) { this.latitude = latitude; }
 
-    public void setIdServicio(Long idServicio) {
-        this.idServicio = idServicio;
-    }
+    public BigDecimal getLongitude() { return longitude; }
+    public void setLongitude(BigDecimal longitude) { this.longitude = longitude; }
 
-    public String getNombreServicio() {
-        return nombreServicio;
-    }
+    public Map<String, BigDecimal> getUbicacion() { return ubicacion; }
+    public void setUbicacion(Map<String, BigDecimal> ubicacion) { this.ubicacion = ubicacion; }
 
-    public void setNombreServicio(String nombreServicio) {
-        this.nombreServicio = nombreServicio;
-    }
-
-    public Long getIdProfesionalServicio() {
-        return idProfesionalServicio;
-    }
-
-    public void setIdProfesionalServicio(Long idProfesionalServicio) {
-        this.idProfesionalServicio = idProfesionalServicio;
-    }
-
-    public Map<String, List<Map<String, String>>> getHorarioDisponible() {
-        return horarioDisponible;
-    }
-
-    public void setHorarioDisponible(Map<String, List<Map<String, String>>> horarioDisponible) {
-        this.horarioDisponible = horarioDisponible;
-    }
-
-    public BigDecimal getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
-    }
-
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
-    }
+    public Double getValoracionMedia() { return valoracionMedia; }
+    public void setValoracionMedia(Double valoracionMedia) { this.valoracionMedia = valoracionMedia; }
 }

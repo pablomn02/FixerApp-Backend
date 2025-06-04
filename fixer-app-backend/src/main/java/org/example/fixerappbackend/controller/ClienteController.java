@@ -1,9 +1,13 @@
 package org.example.fixerappbackend.controller;
 
 import org.example.fixerappbackend.dto.ContratacionDTO;
+import org.example.fixerappbackend.dto.ProfesionalServicioDTO;
 import org.example.fixerappbackend.model.Cliente;
 import org.example.fixerappbackend.model.Contratacion;
 import org.example.fixerappbackend.model.Profesional;
+import org.example.fixerappbackend.model.ProfesionalServicio;
+import org.example.fixerappbackend.model.Valoracion;
+import org.example.fixerappbackend.repo.ValoracionRepo;
 import org.example.fixerappbackend.service.ClienteService;
 import org.example.fixerappbackend.service.ContratacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +21,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
-@CrossOrigin("*")
 public class ClienteController {
 
     @Autowired
@@ -25,6 +28,9 @@ public class ClienteController {
 
     @Autowired
     private ContratacionService contratacionService;
+
+    @Autowired
+    private ValoracionRepo valoracionRepo;
 
     @GetMapping
     public List<Cliente> getAll() {
@@ -69,11 +75,26 @@ public class ClienteController {
     }
 
     @GetMapping("/{clienteId}/favoritos")
-    public ResponseEntity<Set<Profesional>> getFavoritos(
-            @PathVariable Long clienteId) {
-        return ResponseEntity.ok(
-                clienteService.getFavoritos(clienteId)
-        );
-    }
+    public ResponseEntity<List<ProfesionalServicioDTO>> getFavoritos(@PathVariable Long clienteId) {
+        Set<Profesional> favoritos = clienteService.getFavoritos(clienteId);
 
+        List<ProfesionalServicioDTO> favoritosDTO = favoritos.stream()
+                .map(prof -> prof.getProfesionalServicios().stream().findFirst().map(servicio -> {
+                    ProfesionalServicioDTO dto = new ProfesionalServicioDTO(prof, servicio);
+
+                    // Calcular valoración media
+                    List<Valoracion> valoraciones = valoracionRepo.findByProfesionalId(prof.getId());
+                    double media = valoraciones.stream()
+                            .mapToInt(Valoracion::getPuntuacion)
+                            .average()
+                            .orElse(0.0);
+                    dto.setValoracionMedia(media);
+
+                    return dto;
+                }).orElse(null))
+                .filter(dto -> dto != null)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(favoritosDTO);
+    }
 }

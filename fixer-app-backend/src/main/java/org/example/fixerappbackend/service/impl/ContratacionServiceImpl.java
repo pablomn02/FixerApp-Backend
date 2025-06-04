@@ -12,6 +12,8 @@ import org.example.fixerappbackend.service.ProfesionalServicioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,48 +63,41 @@ public class ContratacionServiceImpl implements ContratacionService {
     }
 
     @Override
-    public ResponseEntity<?> crearContratacion(ContratacionCreateRequest request) {
-        try {
-            if (request.getIdUsuario() == null || request.getIdProfesionalServicio() == null) {
-                return ResponseEntity.badRequest().body(Map.of(
-                        "error", "Faltan datos obligatorios",
-                        "message", "Se requiere idUsuario e idProfesionalServicio"
-                ));
-            }
-
-            ProfesionalServicio profesionalServicio = profesionalServicioService
-                    .findById(request.getIdProfesionalServicio())
-                    .orElseThrow(() -> new RuntimeException("ProfesionalServicio no encontrado."));
-
-            Cliente cliente = clienteService
-                    .findById(request.getIdUsuario())
-                    .orElseThrow(() -> new RuntimeException("El usuario no es un cliente válido."));
-
-            this.validarDisponibilidad(profesionalServicio, request.getFechaHora(), 60);
-
-            Contratacion nueva = new Contratacion();
-            nueva.setCliente(cliente);
-            nueva.setProfesionalServicio(profesionalServicio);
-            nueva.setFechaHora(request.getFechaHora());
-            nueva.setDuracionEstimada(60);
-            nueva.setCostoTotal(request.getCostoTotal());
-            nueva.setEstadoContratacion(EstadoContratacion.PENDIENTE);
-            contratacionRepo.save(nueva);
-
-            HoraOcupada bloque = new HoraOcupada();
-            bloque.setFecha(request.getFechaHora().toLocalDate());
-            bloque.setHoraInicio(request.getFechaHora().toLocalTime());
-            bloque.setHoraFin(request.getFechaHora().toLocalTime().plusHours(1));
-            bloque.setEstado("ocupado");
-            bloque.setProfesionalServicio(profesionalServicio);
-            horaOcupadaRepo.save(bloque);
-
-            return ResponseEntity.ok(nueva);
-
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
+    public void crearContratacion(ContratacionCreateRequest request) {
+        if (request.getIdUsuario() == null || request.getIdProfesionalServicio() == null) {
+            throw new IllegalArgumentException("Faltan datos obligatorios: idUsuario e idProfesionalServicio.");
         }
+
+        ProfesionalServicio profesionalServicio = profesionalServicioService
+                .findById(request.getIdProfesionalServicio())
+                .orElseThrow(() -> new RuntimeException("ProfesionalServicio no encontrado."));
+
+        Cliente cliente = clienteService
+                .findById(request.getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado."));
+
+        this.validarDisponibilidad(profesionalServicio, request.getFechaHora(), request.getDuracionEstimada());
+
+        Contratacion nueva = new Contratacion();
+        nueva.setCliente(cliente);
+        nueva.setProfesionalServicio(profesionalServicio);
+        nueva.setFechaHora(request.getFechaHora());
+        nueva.setDuracionEstimada(request.getDuracionEstimada());
+        nueva.setCostoTotal(request.getCostoTotal());
+        nueva.setEstadoContratacion(EstadoContratacion.PENDIENTE);
+        contratacionRepo.save(nueva);
+
+        HoraOcupada bloque = new HoraOcupada();
+        bloque.setFecha(request.getFechaHora().toLocalDate());
+        bloque.setHoraInicio(request.getFechaHora().toLocalTime());
+        bloque.setHoraFin(request.getFechaHora().toLocalTime().plusHours(1));
+        bloque.setEstado("ocupado");
+        bloque.setProfesionalServicio(profesionalServicio);
+        horaOcupadaRepo.save(bloque);
     }
+
+
+
 
     @Override
     public List<String> getHorasOcupadas(Long idProfesionalServicio, String fechaStr) {

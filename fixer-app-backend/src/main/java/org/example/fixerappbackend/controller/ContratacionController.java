@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/contrataciones")
@@ -23,15 +24,6 @@ public class ContratacionController {
     @Autowired
     private ContratacionService contratacionService;
 
-    @Autowired
-    private ProfesionalServicioService profesionalServicioService;
-
-    @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
-    private UsuarioRepo usuarioRepo;
-
     @GetMapping
     public List<Contratacion> getAllContrataciones() {
         return contratacionService.getAll();
@@ -39,7 +31,12 @@ public class ContratacionController {
 
     @PostMapping
     public ResponseEntity<?> crearContratacion(@RequestBody ContratacionCreateRequest request) {
-        return contratacionService.crearContratacion(request);
+        try {
+            contratacionService.crearContratacion(request);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping("/ocupadas/{idProfesionalServicio}/{fecha}")

@@ -24,7 +24,7 @@ public interface ContratacionService {
 
     void validarDisponibilidad(ProfesionalServicio profesionalServicio, LocalDateTime fechaHoraUTC, int duracion);
 
-    ResponseEntity<?> crearContratacion(ContratacionCreateRequest request);
+    void crearContratacion(ContratacionCreateRequest request);
 
     List<Contratacion> findByClienteIdAndEstadoIn(Long idCliente, List<EstadoContratacion> estados);
 
