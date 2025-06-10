@@ -16,7 +16,6 @@ public class ValoracionDTO {
 
     // Getters y setters
 
-
     public String getNombreCliente() {
         return nombreCliente;
     }

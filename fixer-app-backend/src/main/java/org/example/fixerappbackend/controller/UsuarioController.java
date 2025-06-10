@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,15 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{id}")
+    @CrossOrigin("*")
+    public ResponseEntity<?> deleteUsuario(@PathVariable Long id) {
+        Optional<Usuario> optUsuario = usuarioService.findById(id);
+        if (optUsuario.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
-
-
+        usuarioService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }

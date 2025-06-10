@@ -22,8 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -56,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
     @Value("${app.frontend.url}")
     private String frontendUrl;
 
+    // ******** LOGIN ********
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
         LOGGER.info("Intentando login con email: " + loginRequest.getEmail());
@@ -79,6 +82,12 @@ public class AuthServiceImpl implements AuthService {
 
         String rol = determinarRol(usuario);
 
+        if (rol.equals("admin")) {
+            Administrador administrador = (Administrador) usuario;
+            administrador.setUltimoAcceso(Instant.now());
+            usuarioRepository.save(administrador);
+        }
+
         return ResponseEntity.ok(Map.of(
                 "token", token,
                 "rol", rol,
@@ -86,6 +95,9 @@ public class AuthServiceImpl implements AuthService {
         ));
     }
 
+
+    // ******** REGISTER CLIENTE ********
+    @Override
     public ResponseEntity<?> registerCliente(ClienteRegisterRequest registerRequest) {
         LOGGER.info("Intentando registrar cliente con email: " + registerRequest.getEmail());
 
@@ -104,10 +116,8 @@ public class AuthServiceImpl implements AuthService {
         cliente.setNombreUsuario(registerRequest.getUsuario());
         cliente.setEmail(registerRequest.getEmail());
         cliente.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
-        cliente.setValoracion(0.0f);
         cliente.setPreferencias(registerRequest.getPreferencias());
-
-        cliente.setTipoUsuario(TipoUsuario.valueOf("cliente"));
+        cliente.setTipoUsuario(TipoUsuario.cliente);
 
         usuarioRepository.save(cliente);
         LOGGER.info("Cliente registrado exitosamente: " + cliente.getEmail());
@@ -123,7 +133,8 @@ public class AuthServiceImpl implements AuthService {
                 ));
     }
 
-
+    // ******** REGISTER PROFESIONAL ********
+    @Override
     public ResponseEntity<?> registerProfesional(ProfesionalRegisterRequest registerRequest) {
         LOGGER.info("Intentando registrar profesional con email: " + registerRequest.getEmail());
 
@@ -147,20 +158,24 @@ public class AuthServiceImpl implements AuthService {
                     .body(Map.of("error", "El precio por hora es requerido"));
         }
 
-        if (registerRequest.getUbicacion() == null ||
-                registerRequest.getUbicacion().get("latitud") == null ||
-                registerRequest.getUbicacion().get("longitud") == null) {
+        if (registerRequest.getLatitud() == null || registerRequest.getLongitud() == null) {
             LOGGER.warning("El campo 'ubicacion' es obligatorio para profesionales");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "El campo 'ubicacion' es obligatorio y debe contener 'latitud' y 'longitud'"));
         }
+
+        Optional<Servicio> optServicio = servicioRepository.findById(registerRequest.getIdServicio());
+        if (optServicio.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Servicio no encontrado"));
+        }
+        Servicio servicio = optServicio.get();
 
         Profesional profesional = new Profesional();
         profesional.setNombre(registerRequest.getNombre());
         profesional.setNombreUsuario(registerRequest.getUsuario());
         profesional.setEmail(registerRequest.getEmail());
         profesional.setContrasena(passwordEncoder.encode(registerRequest.getContrasena()));
-        profesional.setValoracion(0.0f);
         profesional.setEspecialidad(registerRequest.getEspecialidad());
         profesional.setPrecioHora(registerRequest.getPrecioHora());
         profesional.setHorarioDisponible(registerRequest.getHorarioDisponible());
@@ -170,12 +185,9 @@ public class AuthServiceImpl implements AuthService {
         profesional.setTotalContrataciones(0);
         profesional.setLatitude(registerRequest.getLatitud());
         profesional.setLongitude(registerRequest.getLongitud());
-
-        Servicio servicio = servicioRepository.findById(registerRequest.getIdServicio())
-                .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         profesional.setServicio(servicio);
-
         profesional.setTipoUsuario(TipoUsuario.profesional);
+
         usuarioRepository.save(profesional);
 
         ProfesionalServicio relacion = new ProfesionalServicio();
@@ -185,7 +197,6 @@ public class AuthServiceImpl implements AuthService {
         relacion.setPrecio(registerRequest.getPrecioHora());
 
         profesionalServicioRepo.save(relacion);
-
 
         LOGGER.info("Profesional registrado exitosamente: " + profesional.getEmail());
 
@@ -198,9 +209,9 @@ public class AuthServiceImpl implements AuthService {
                         "idUsuario", profesional.getId(),
                         "message", "Profesional registrado exitosamente"
                 ));
-
     }
 
+    // ******** PASSWORD RESET ********
     @Override
     @Transactional
     public void requestPasswordReset(String email) throws Exception {
@@ -258,7 +269,8 @@ public class AuthServiceImpl implements AuthService {
                         "<h1 style=\"color: #3880ff; text-align: center; font-size: 24px; margin-bottom: 20px;\">Recuperación de Contraseña</h1>" +
                         "<p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>" +
                         "<a href=\"" + resetUrl + "\">Restablecer Contraseña</a>" +
-                        "</div>", true);
+                        "</div>", true
+        );
 
         mailSender.send(message);
     }
@@ -268,6 +280,8 @@ public class AuthServiceImpl implements AuthService {
             return "cliente";
         } else if (usuario instanceof Profesional) {
             return "profesional";
+        } else if (usuario instanceof Administrador) {
+            return "admin";
         } else {
             return "desconocido";
         }

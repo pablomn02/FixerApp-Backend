@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.fixerappbackend.model.Profesional;
 import org.example.fixerappbackend.model.ProfesionalServicio;
+import org.example.fixerappbackend.model.Valoracion;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Objects;
 
 public class ProfesionalServicioDTO {
     private Long idUsuario;
@@ -21,7 +24,7 @@ public class ProfesionalServicioDTO {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Map<String, BigDecimal> ubicacion;
-    private Double valoracionMedia;
+    private Double valoracionMedia; // se rellenará usando el método que veremos
 
     public ProfesionalServicioDTO() {}
 
@@ -43,9 +46,12 @@ public class ProfesionalServicioDTO {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JavaType stringType = mapper.getTypeFactory().constructType(String.class);
-            JavaType mapStringStringType = mapper.getTypeFactory().constructMapType(Map.class, String.class, String.class);
-            JavaType listOfMapStringStringType = mapper.getTypeFactory().constructCollectionType(List.class, mapStringStringType);
-            JavaType finalMapType = mapper.getTypeFactory().constructMapType(Map.class, stringType, listOfMapStringStringType);
+            JavaType mapStringStringType =
+                    mapper.getTypeFactory().constructMapType(Map.class, String.class, String.class);
+            JavaType listOfMapStringStringType =
+                    mapper.getTypeFactory().constructCollectionType(List.class, mapStringStringType);
+            JavaType finalMapType =
+                    mapper.getTypeFactory().constructMapType(Map.class, stringType, listOfMapStringStringType);
 
             this.horarioDisponible = mapper.convertValue(
                     profesional.getHorarioDisponible(),
@@ -55,9 +61,22 @@ public class ProfesionalServicioDTO {
             e.printStackTrace();
             this.horarioDisponible = null;
         }
+
+        // Inicialmente dejamos valoracionMedia a 0.0; luego lo llenamos con el método.
+        this.valoracionMedia = 0.0;
+    }
+
+    public Double calcularValoracionMedia(Set<Valoracion> todasLasValoraciones) {
+        return todasLasValoraciones.stream()
+                .map(Valoracion::getPuntuacion)
+                .filter(Objects::nonNull)
+                .mapToDouble(Double::valueOf)
+                .average()
+                .orElse(0.0);
     }
 
     // Getters y setters
+
     public Long getIdUsuario() { return idUsuario; }
     public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
 
@@ -77,10 +96,16 @@ public class ProfesionalServicioDTO {
     public void setNombreServicio(String nombreServicio) { this.nombreServicio = nombreServicio; }
 
     public Long getIdProfesionalServicio() { return idProfesionalServicio; }
-    public void setIdProfesionalServicio(Long idProfesionalServicio) { this.idProfesionalServicio = idProfesionalServicio; }
+    public void setIdProfesionalServicio(Long idProfesionalServicio) {
+        this.idProfesionalServicio = idProfesionalServicio;
+    }
 
-    public Map<String, List<Map<String, String>>> getHorarioDisponible() { return horarioDisponible; }
-    public void setHorarioDisponible(Map<String, List<Map<String, String>>> horarioDisponible) { this.horarioDisponible = horarioDisponible; }
+    public Map<String, List<Map<String, String>>> getHorarioDisponible() {
+        return horarioDisponible;
+    }
+    public void setHorarioDisponible(Map<String, List<Map<String, String>>> horarioDisponible) {
+        this.horarioDisponible = horarioDisponible;
+    }
 
     public BigDecimal getLatitude() { return latitude; }
     public void setLatitude(BigDecimal latitude) { this.latitude = latitude; }

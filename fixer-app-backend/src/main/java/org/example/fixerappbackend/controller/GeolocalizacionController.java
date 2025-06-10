@@ -13,20 +13,22 @@ public class GeolocalizacionController {
 
     @GetMapping("/reverse")
     public ResponseEntity<?> obtenerDireccion(@RequestParam double lat, @RequestParam double lon) {
-        String url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon;
+        String url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="
+                + lat + "&lon=" + lon;
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.set("User-Agent", "FixerApp/1.0 (tucorreo@ejemplo.com)");
+        headers.set("User-Agent", "FixerApp/1.0 (pablomnavarro9@gmail.com)");
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url, HttpMethod.GET, entity, String.class);
             return ResponseEntity.ok(response.getBody());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener la dirección");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener la dirección");
         }
     }
 }
-

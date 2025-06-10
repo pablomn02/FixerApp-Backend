@@ -27,9 +27,6 @@ public abstract class Usuario {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "valoracion")
-    private Float valoracion;
-
     public Long getId() {
         return id;
     }
@@ -78,12 +75,5 @@ public abstract class Usuario {
         this.email = email;
     }
 
-    public Float getValoracion() {
-        return valoracion;
-    }
-
-    public void setValoracion(Float valoracion) {
-        this.valoracion = valoracion;
-    }
 }
 
