@@ -18,6 +18,6 @@ Implementado con **Java y Spring Boot**, ofrece una API REST robusta para la com
 - 🌐 Endpoints REST documentados con Swagger/OpenAPI *(si lo usas)*  
 
 📬 Contacto
-Autor: Pablo Menéndez Navarro
-Email: pablomnavarro9@gmail.com
-LinkedIn: linkedin.com/in/pablomn02
+- Autor: Pablo Menéndez Navarro
+- Email: pablomnavarro9@gmail.com
+- LinkedIn: linkedin.com/in/pablomn02
