@@ -3,6 +3,9 @@
 Este es el **backend de Fixer**, una aplicación de búsqueda de profesionales mediante geolocalización.  
 Implementado con **Java y Spring Boot**, ofrece una API REST robusta para la comunicación con el frontend.
 
+## 🎨 App desplegada
+https://pablomn25.iesmontenaranco.com
+
 ## 🚀 Tecnologías principales
 - Java / Spring Boot  
 - Hibernate / JPA  
